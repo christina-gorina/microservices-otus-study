@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: students-app
+  namespace: homework-5
+  labels:
+    app: students-app
+spec:
+  selector:
+    matchLabels:
+      app: students-app
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: hw5
+    spec:
+      containers:            
+        - image: christinagorina/homework-5
+          name: studentscontainer
+          ports:
+            - containerPort: 8081          
+          imagePullPolicy: IfNotPresent
+#          readinessProbe:
+#            httpGet:
+#              path: /health
+#              port: 8081
+#            initialDelaySeconds: 3
+#            periodSeconds: 3
+#          livenessProbe:
+#            httpGet:
+#              path: /health
+#              port: 8081
+#            initialDelaySeconds: 3
+#            periodSeconds: 3
