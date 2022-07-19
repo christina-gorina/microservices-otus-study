@@ -18,23 +18,23 @@ spec:
   template:
     metadata:
       labels:
-        app: hw5
+        app: students-app
     spec:
       containers:            
-        - image: christinagorina/homework-5
+        - image: christinagorina/homework-5:1.0.0
           name: studentscontainer
           ports:
             - containerPort: 8081          
           imagePullPolicy: IfNotPresent
-#          readinessProbe:
-#            httpGet:
-#              path: /health
-#              port: 8081
-#            initialDelaySeconds: 3
-#            periodSeconds: 3
-#          livenessProbe:
-#            httpGet:
-#              path: /health
-#              port: 8081
-#            initialDelaySeconds: 3
-#            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 3

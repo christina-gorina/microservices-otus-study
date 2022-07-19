@@ -1,0 +1,45 @@
+{
+	"info": {
+		"_postman_id": "9cf21446-8244-456a-afda-fdbae366b14a",
+		"name": "Homework-5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', function () {\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Body equals {status\":\"OK\"}', function () {\r",
+							"\tpm.expect(pm.response.text()).to.eq('{\"status\":\"OK\"}');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://arch.homework/health",
+					"protocol": "http",
+					"host": [
+						"arch",
+						"homework"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
