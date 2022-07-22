@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driver-class-name: ${DRIVER_CLASS_NAME}
+    url: ${DB_URL}
+    username: ${USER_NAME}
+    password: ${USER_PASSWORD}
+  jpa:
+    generate-ddl: ${GENERATE_DDL}
+    properties:
+      hibernate:
+        dialect: ${HIBERNATE_DIALECT}
+    show-sql: ${SHOW_SQL}
+server:
+  port: ${SERVER_PORT}
