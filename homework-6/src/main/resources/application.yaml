@@ -5,14 +5,10 @@ spring:
     username: postgres
     password: password
   jpa:
-    hibernate:
-      ddl-auto: create
-    #generate-ddl: true
-    #properties:
-      #hibernate:
-        #dialect: org.hibernate.dialect.PostgreSQLDialect
-
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
     show-sql: false
 server:
