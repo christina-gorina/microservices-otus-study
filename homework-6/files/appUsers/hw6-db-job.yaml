@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-job
+  namespace: homework-6
+  labels:
+    app: db-job
+spec:
+  template:
+    metadata:
+      name: db-job
+      labels:
+        app: insert-in-to-db
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: insert
+        env:
+          - name: DATABASE_URI
+            value: psqldb-postgresql.postgres
+        image: docker.io/bitnami/postgresql:14.4.0-debian-11-r13
+        command:
+          - sh
+          - "-c"
+          - |
+            PGPASSWORD=userPassword psql -d usershw6 -U regUser -h $DATABASE_URI  <<'EOF'
+              INSERT INTO usersperson(id,username,first_name, last_name, email, phone) 
+              VALUES(DEFAULT,'iUser', 'Nick', 'Red', 'NickRed@mail.ru', '1244535356');
+            EOF
+  backoffLimit: 0

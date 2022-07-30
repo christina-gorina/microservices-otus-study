@@ -1,0 +1,14 @@
+global:
+  postgresql:
+    auth:
+      username: "regUser"
+      database: "usershw6"
+      existingSecret: "hw6-db-secrets"
+      secretKeys:
+        adminPasswordKey: "adminPwd"
+        userPasswordKey: "userPwd"
+    service:
+      ports:
+        postgresql: "5432"
+  persistence:
+    size: 1Gi
