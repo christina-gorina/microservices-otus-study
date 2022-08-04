@@ -1,0 +1,64 @@
+1 Установка postgres из helm
+
+перейти в папку с манифестами для postgres
+cd "адрес до этой папки\microservices-otus-study\homework-6\files\dbPostgres"
+
+выполнить команды
+kubectl create namespace postgres
+kubectl apply -f hw6-db-secrets.yaml
+helm -n postgres install psqldb -f values.yaml bitnami/postgresql
+
+2 установка приложения
+
+закачать docker образ приложения users (https://hub.docker.com/repository/docker/christinagorina/homework-6/general)
+docker pull christinagorina/homework-6:1.0.0
+
+перейти в папку с манифестами для куба
+cd "адрес до этой папки\microservices-otus-study\homework-6\files\appUsers"
+
+выполнить команды
+kubectl create namespace homework-6
+kubectl apply -f .
+
+3 Адрес до коллекции postman
+адрес до этой папки\microservices-otus-study\homework-6\files\tests
+
+--------------------
+Само приложение users, из которого сделан docker образ тут (java SpringBoot)
+адрес до этой папки\microservices-otus-study\homework-6\users
+
+API приложения
+###
+POST http://arch.homework/api/v1/user
+Content-Type: application/json
+
+{
+  "username": "username1",
+  "firstName": "firstName1",
+  "lastName": "lastName1",
+  "email": "email1",
+  "phone": "phone1"
+
+}
+#########
+
+GET http://arch.homework/api/v1/user/1
+Content-Type: application/json
+############
+
+PUT http://arch.homework/api/v1/user/1
+Content-Type: application/json
+
+{
+  "username": "username111",
+  "firstName": "firstName111",
+  "lastName": "lastName111",
+  "email": "email111",
+  "phone": "phone111"
+
+}
+###############
+
+DELETE http://arch.homework/api/v1/user/1
+
+###############
