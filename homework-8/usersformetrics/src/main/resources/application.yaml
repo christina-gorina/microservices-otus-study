@@ -1,0 +1,46 @@
+#spring:
+  #datasource:
+    #driver-class-name: org.postgresql.Driver
+    #url: jdbc:postgresql://localhost:5432/postgres
+    #username: postgres
+    #password: password
+  #jpa:
+    #generate-ddl: true
+    #properties:
+      #hibernate:
+        #dialect: org.hibernate.dialect.PostgreSQLDialect
+    #show-sql: true
+#server:
+  #port: 8083
+
+spring:
+  datasource:
+    driver-class-name: ${DRIVER_CLASS_NAME}
+    url: ${DB_URL}
+    username: ${USER_NAME}
+    password: ${USER_PASSWORD}
+  jpa:
+    generate-ddl: ${GENERATE_DDL}
+    properties:
+      hibernate:
+        dialect: ${HIBERNATE_DIALECT}
+    show-sql: ${SHOW_SQL}
+server:
+  port: ${SERVER_PORT}
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    distribution:
+      slo:
+        http.server.requests: 10ms, 50ms, 100ms, 200ms, 300ms, 400ms, 500ms
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
