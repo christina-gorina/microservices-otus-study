@@ -1,0 +1,33 @@
+хорошая статья
+https://www.stackfinder.ru/questions/67964176/springboot-observability-on-max-count-sum-metrics
+
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+cd в папку с values (C:\Kris\CodeBase\Сourses\Otus\Microservices\lesson-8\prometheus-34322-a73f36)
+kubectl create namespace metrics
+helm -n metrics install stack prometheus-community/kube-prometheus-stack -f stack-values.yaml
+
+kubectl -n metrics port-forward service/prometheus-operated  9090
+kubectl -n metrics port-forward service/stack-grafana  9000:80
+
+В этом файле подробная инструкция по лабе
+C:\Kris\CodeBase\Сourses\Otus\Microservices\lesson-8\Prometheus. Grafana..docx
+В ней описано, как ingress-nginx установить, что бы он метрики показывал. Мне пришлось переустанавливать уже имеющийся.
+
+Это скаченная утилита ab, которая позволяет обращаться к endpoints
+cd C:\Kris\CodeBase\Сourses\Otus\Microservices\lesson-8\httpd-2.4.54-o111p-x64-vs17\Apache24\bin
+
+FOR /L %N IN () DO ab.exe  -n 50 -c 10 http://arch.homework/api/v1/users
+
+FOR /L %N IN () DO ab.exe  -n 50 -c 10 http://arch.homework/api/v1/user/1
+
+
+rps
+sum by (uri) (rate(http_server_requests_seconds_count{uri=~"/api/v1/user/\\{id\\}|/api/v1/users"}[2m]))
+
+latency
+histogram_quantile(0.5, sum by (uri, le) (rate(http_server_requests_seconds_bucket{uri=~"/api/v1/user/\\{id\\}|/api/v1/users"}[$__interval])))
+----------------------------
+Приложение подключается к постгре из предыдущего задания

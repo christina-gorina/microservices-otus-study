@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hw8-app-config
+  namespace: homework-8
+data:
+  spring.datasource.url: jdbc:postgresql://psqldb-postgresql.postgres:5432/usershw6
+  spring.datasource.driver-class-name: org.postgresql.Driver
+  spring.jpa.generate-ddl: "true"
+  spring.jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  spring.jpa.show-sql: "true"
+  server.port: "8083"
+  
+  

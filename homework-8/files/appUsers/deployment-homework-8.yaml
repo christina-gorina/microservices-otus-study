@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usersformetrics-app
+  namespace: homework-8
+  labels:
+    app: usersformetrics-app
+spec:
+  selector:
+    matchLabels:
+      app: usersformetrics-app
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: usersformetrics-app
+    spec:
+      containers:     
+        - name: usersformetricscontainer
+          image: christinagorina/homework-8:1.0.0
+          env:
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: hw8-app-secrets
+                key: spring.datasource.username
+          - name: USER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: hw8-app-secrets
+                key: spring.datasource.password
+          - name: DB_URL
+            valueFrom:
+              configMapKeyRef:
+                name: hw8-app-config
+                key: spring.datasource.url
+          - name: DRIVER_CLASS_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: hw8-app-config
+                key: spring.datasource.driver-class-name
+          - name: GENERATE_DDL
+            valueFrom:
+              configMapKeyRef:
+                name: hw8-app-config
+                key: spring.jpa.generate-ddl
+          - name: HIBERNATE_DIALECT
+            valueFrom:
+              configMapKeyRef:
+                name: hw8-app-config
+                key: spring.jpa.properties.hibernate.dialect
+          - name: SHOW_SQL
+            valueFrom:
+              configMapKeyRef:
+                name: hw8-app-config
+                key: spring.jpa.show-sql
+          - name: SERVER_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: hw8-app-config
+                key: server.port
+          ports:
+            - containerPort: 8083
+          imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8083
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8083
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          
+        

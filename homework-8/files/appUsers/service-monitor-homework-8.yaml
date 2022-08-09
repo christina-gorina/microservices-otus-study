@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: usersformetrics-monitor
+  namespace: homework-8
+  labels:
+    app: usersformetrics-monitor
+spec:
+  endpoints:
+    - port: metrics
+      interval: 15s
+      path: /actuator/prometheus     
+  selector:
+    matchLabels:
+      app: usersformetrics-app
+  
