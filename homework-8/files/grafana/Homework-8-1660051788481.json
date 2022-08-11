@@ -176,7 +176,7 @@
         "x": 12,
         "y": 0
       },
-      "id": 5,
+      "id": 11,
       "options": {
         "legend": {
           "calcs": [],
@@ -194,11 +194,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by (uri, le) (rate(http_server_requests_seconds_bucket{uri=~\"/api/v1/user/\\\\{id\\\\}|/api/v1/users\"}[$__interval])))",
+          "expr": "sum by (uri) (rate(http_server_requests_seconds_count{outcome=\"SERVER_ERROR\", uri=~\"/api/v1/user/\\\\{id\\\\}|/api/v1/users\"}[$__interval]))",
           "refId": "A"
         }
       ],
-      "title": "App latency 0.95 quantile",
+      "title": "App Error Rate",
       "type": "timeseries"
     },
     {
@@ -348,7 +348,7 @@
         "x": 12,
         "y": 8
       },
-      "id": 9,
+      "id": 5,
       "options": {
         "legend": {
           "calcs": [],
@@ -366,11 +366,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.999, sum by (uri, le) (rate(http_server_requests_seconds_bucket{uri=~\"/api/v1/user/\\\\{id\\\\}|/api/v1/users\"}[$__interval])))",
+          "expr": "histogram_quantile(0.95, sum by (uri, le) (rate(http_server_requests_seconds_bucket{uri=~\"/api/v1/user/\\\\{id\\\\}|/api/v1/users\"}[$__interval])))",
           "refId": "A"
         }
       ],
-      "title": "App latency max quantile",
+      "title": "App latency 0.95 quantile",
       "type": "timeseries"
     },
     {
@@ -521,7 +521,7 @@
         "x": 12,
         "y": 15
       },
-      "id": 11,
+      "id": 9,
       "options": {
         "legend": {
           "calcs": [],
@@ -539,11 +539,11 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (uri) (rate(http_server_requests_seconds_count{outcome=\"SERVER_ERROR\", uri=~\"/api/v1/user/\\\\{id\\\\}|/api/v1/users\"}[$__interval]))",
+          "expr": "histogram_quantile(0.999, sum by (uri, le) (rate(http_server_requests_seconds_bucket{uri=~\"/api/v1/user/\\\\{id\\\\}|/api/v1/users\"}[$__interval])))",
           "refId": "A"
         }
       ],
-      "title": "App Error Rate",
+      "title": "App latency max quantile",
       "type": "timeseries"
     },
     {
@@ -1079,6 +1079,6 @@
   "timezone": "",
   "title": "Homework-8",
   "uid": "3RPeUvmVk",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }
