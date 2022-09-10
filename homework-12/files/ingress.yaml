@@ -1,0 +1,41 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: usersserver 
+  namespace: homework-12
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: http://auth-service.homework-12.svc.cluster.local/insystem # все запросы к usersserver проходят через авторизацию. Если возвращает 200, то авторизация пройдена
+    nginx.ingress.kubernetes.io/auth-response-headers: x-auth-user # просто передает дальше этот заголовок с его значением
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: / # направляет запросы на usersserver
+            pathType: Prefix
+            backend:
+              service:
+                name: usersserver
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth-service
+  namespace: homework-12
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /auth(/|$)(.*)  # направляет запросы с auth на auth-service
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 80

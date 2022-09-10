@@ -1,0 +1,44 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: usersserver
+  namespace: homework-12
+  labels:
+    app: usersserver
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: usersserver
+  template:
+    metadata:
+      labels:
+        app: usersserver
+    spec:
+      containers:
+        - name: usersserver
+          image: christinagorina/users-homework-12:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8082
+              
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: usersserver
+  namespace: homework-12
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      name: http
+      targetPort: http
+  selector:
+    app: usersserver
+
