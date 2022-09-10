@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.otus.spring.service.UserService;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -28,7 +30,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests().antMatchers( "/insystem" ).permitAll()
                 .and()
-                .formLogin();
+                .authorizeRequests().antMatchers( "/login" ).permitAll()
+                .and()
+                .formLogin()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/auth/insystem");
     }
 
     @SuppressWarnings("deprecation")
@@ -39,6 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        System.out.println("qwe configure method");
         auth.userDetailsService(userService);
     }
 }

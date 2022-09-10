@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS USERS;
 
-CREATE TABLE users
+CREATE TABLE USERS
 (
     id               IDENTITY NOT NULL PRIMARY KEY,
     name             VARCHAR                           NOT NULL UNIQUE,
