@@ -68,6 +68,15 @@ public class UserController {
         return userRepository.save(updateUserData);
     }
 
+    @DeleteMapping("/api/v1/user/{name}")
+    public String deleteByName(@PathVariable("name") String name) {
+        System.out.println("qwe deleteByName method");
+        System.out.println("qwe deleteByName name = " + name);
+        userRepository.deleteById(Optional.ofNullable(userRepository.findByName(name)).map(User::getId).orElseThrow(IllegalArgumentException::new));
+        System.out.println("qwe deleteByName deleted");
+        return "User with name " + name + " deleted";
+    }
+
     @GetMapping("/health")
     public ResponseEntity<Answer> health() {
         System.out.println("qwe health method");
