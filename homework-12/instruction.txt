@@ -1,0 +1,32 @@
+1. Скачиваем с dockerHub auth и user сервисы с помошью следующих команд
+docker pull christinagorina/auth-homework-12:1.0.0
+docker pull christinagorina/users-homework-12:1.0.0
+
+2. Создаем namespace
+kubectl create namespace homework-12
+
+3. Переходим в папку files
+cd "адрес_до_папки_с_проектом\microservices-otus-study\homework-12\files"
+
+4. В качестве api-gateway используется nginx-ingress, установленный следующей командой с файлом nginx-config.yaml
+helm install ingress-nginx --namespace homework-12 --values nginx-config.yaml ingress-nginx/ingress-nginx
+
+5. Устанавливаем сервисы
+kubectl apply -f auth-k8s.yaml
+kubectl apply -f users-k8s.yaml
+kubectl apply -f ingress.yaml
+
+6. Проверяем что установилось
+kubectl get services -n homework-12
+или
+kubectl get po -n homework-12
+
+7. Пробрасываем порты
+kubectl -n homework-12 port-forward service/ingress-nginx-controller  80:80
+
+8. Адрес тестов для postmen
+адрес_до_папки_с_проектом\microservices-otus-study\homework-12\tests\homework12tests.json
+
+8. Адрес схемы
+адрес_до_папки_с_проектом\microservices-otus-study\homework-12\shema.png
+
