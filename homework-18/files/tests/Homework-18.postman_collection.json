@@ -1,0 +1,334 @@
+{
+	"info": {
+		"_postman_id": "96eb771f-afac-42c7-8eef-1aa8f87e9c26",
+		"name": "Homework-18",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Scenario",
+			"item": [
+				{
+					"name": "Create new order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string: `now created`\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"now created\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idempotencyKey\": \"3d576ddb-68e6-4863-8d96-3085d13d6bec\",\r\n    \"orderIdentifier\": \"f7e96069-5381-4bf7-9607-2b7a0d72e301\",\r\n    \"state\": \"ACTIVE\",\r\n    \"buyerId\": \"1\",\r\n    \"product\": \"{{$randomProductName}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order repeat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string: `already created`\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"already created\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idempotencyKey\": \"3d576ddb-68e6-4863-8d96-3085d13d6bec\",\r\n    \"orderIdentifier\": \"f7e96069-5381-4bf7-9607-2b7a0d72e301\",\r\n    \"state\": \"ACTIVE\",\r\n    \"buyerId\": \"1\",\r\n    \"product\": \"{{$randomProductName}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delay 20 sec",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delay 20 sec. Idempotency storage is clean. Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/delay",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"delay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new order with same idempotencyKey",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string: `now created`\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"now created\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idempotencyKey\": \"3d576ddb-68e6-4863-8d96-3085d13d6bec\",\r\n    \"orderIdentifier\": \"f7e96069-5381-4bf7-9607-2b7a0d72e302\",\r\n    \"state\": \"ACTIVE\",\r\n    \"buyerId\": \"1\",\r\n    \"product\": \"{{$randomProductName}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order repeat  with same idempotencyKey",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string: `already created`\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"already created\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idempotencyKey\": \"3d576ddb-68e6-4863-8d96-3085d13d6bec\",\r\n    \"orderIdentifier\": \"f7e96069-5381-4bf7-9607-2b7a0d72e302\",\r\n    \"state\": \"ACTIVE\",\r\n    \"buyerId\": \"1\",\r\n    \"product\": \"{{$randomProductName}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/order",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clean",
+			"item": [
+				{
+					"name": "Order storage clean",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string: `Order storage cleaned`\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Order storage cleaned\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/order/clean",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"clean"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Idempotency storage clean",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body matches string: `Idempotency storage cleaned`\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Idempotency storage cleaned\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/idempotencyStorage/clean",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"idempotencyStorage",
+								"clean"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
