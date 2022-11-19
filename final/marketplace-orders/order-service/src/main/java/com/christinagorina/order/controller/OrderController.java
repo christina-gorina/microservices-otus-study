@@ -1,11 +1,10 @@
 package com.christinagorina.order.controller;
 
 
-import com.christinagorina.order.model.Order;
-import com.christinagorina.order.service.OrderStatusPublisher;
+import com.christinagorina.dto.OrderDto;
+import com.christinagorina.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -13,15 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class OrderController {
 
-    @Autowired
-    private OrderStatusPublisher publisher;
+    private final OrderService orderService;
 
     @PostMapping("/api/order")
-    public String  create(@RequestBody Order order) {
-        log.info("order = " + order);
-        this.publisher.raiseOrderEvent();
-
-        return "succes";
+    public String create(@RequestBody OrderDto orderDto) {
+        log.info("order qwe = " + orderDto);
+        return orderService.createOrder(orderDto);
     }
 
 }

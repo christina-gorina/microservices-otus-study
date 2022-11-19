@@ -11,11 +11,13 @@ import java.util.function.Supplier;
 @Configuration
 public class OrderConfig {
 
+    //TODO Почему так 1?
     @Bean
     public Sinks.Many<OrderEvent> orderSink(){
         return Sinks.many().unicast().onBackpressureBuffer();
     }
 
+    //TODO Почему так 2?
     @Bean
     public Supplier<Flux<OrderEvent>> orderSupplier(Sinks.Many<OrderEvent> sink){
         return sink::asFlux;

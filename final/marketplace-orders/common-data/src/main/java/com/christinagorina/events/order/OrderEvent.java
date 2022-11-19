@@ -17,13 +17,4 @@ public class OrderEvent implements Event {
     public OrderEvent() {
     }
 
-    @Override
-    public UUID getEventId() {
-        return null;
-    }
-
-    @Override
-    public Date getDate() {
-        return null;
-    }
 }

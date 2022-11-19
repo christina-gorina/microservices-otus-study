@@ -23,15 +23,6 @@ public class PaymentEvent implements Event {
         this.paymentStatus = status;
     }
 
-    @Override
-    public UUID getEventId() {
-        return this.eventId;
-    }
-
-    @Override
-    public Date getDate() {
-        return this.date;
-    }
 
     public PaymentDto getPayment() {
         return payment;

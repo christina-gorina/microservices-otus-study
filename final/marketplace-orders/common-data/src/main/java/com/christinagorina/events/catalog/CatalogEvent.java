@@ -23,22 +23,4 @@ public class CatalogEvent implements Event {
         this.status = status;
     }
 
-    @Override
-    public UUID getEventId() {
-        return this.eventId;
-    }
-
-    @Override
-    public Date getDate() {
-        return this.date;
-    }
-
-    public CatalogDto getCatalog() {
-        return catalog;
-    }
-
-    public CatalogStatus getStatus() {
-        return status;
-    }
-
 }
