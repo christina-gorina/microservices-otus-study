@@ -1,5 +1,6 @@
 package com.christinagorina.order.model;
 
+import com.christinagorina.events.order.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -19,17 +21,15 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public String uuid;
-    public Long  userId;
-    public OrderStatus state;
-    public PaymentStatus paymentStatus;
-    //TODO разобраться с item
-    //public List<Long> itemIds;
-    public Boolean point;
-    public Long  pointId;
-    public String address;
-    public LocalDateTime dateTime;
-    public BigDecimal price;
+    private Long id;
+    private UUID uuid;
+    private Long  userId;
+    private OrderStatus orderStatus;
+    private PaymentStatus paymentStatus;
+    private Boolean point;
+    private Long  pointId;
+    private String address;
+    private LocalDateTime dateTime;
+    private BigDecimal price;
 
 }

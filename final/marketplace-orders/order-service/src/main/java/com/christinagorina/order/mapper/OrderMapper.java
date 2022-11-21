@@ -2,7 +2,7 @@ package com.christinagorina.order.mapper;
 
 import com.christinagorina.dto.OrderDto;
 import com.christinagorina.order.model.Order;
-import com.christinagorina.order.model.OrderEvent2;
+import com.christinagorina.events.order.OrderEvent;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,8 +16,6 @@ public class OrderMapper {
         return Order.builder()
                 .uuid(orderDto.getUuid())
                 .userId(orderDto.getUserId())
-                //TODO itemIds builder
-                //.itemIds(orderDto.getItemIds())
                 .point(orderDto.getPoint())
                 .pointId(orderDto.getPointId())
                 .address(orderDto.getAddress())
@@ -25,10 +23,12 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderEvent2 orderToOrderEvent(@NonNull Order order){
+    public OrderEvent orderToOrderEvent(@NonNull Order order, @NonNull OrderDto orderDto){
         log.info("orderToOrderEvent qwe start");
-        return OrderEvent2.builder()
+        return OrderEvent.builder()
                 .uuid(order.getUuid())
+                .productItemsIdAndCount(orderDto.getProductItemsIdAndCount())
+                .orderStatus(order.getOrderStatus())
                 .build();
 
     }

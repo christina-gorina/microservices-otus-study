@@ -1,9 +1,8 @@
 package com.christinagorina.events.order;
 
+//TODO перенести в common
 public enum OrderStatus {
-
-    ORDER_CREATED,
-    ORDER_CANCELLED,
-    ORDER_COMPLETED
-
+    NEW,
+    REJECTED,
+    COMPLETED
 }

@@ -1,20 +1,20 @@
 package com.christinagorina.events.order;
 
 
-import com.christinagorina.events.Event;
-import lombok.Data;
+import lombok.*;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.UUID;
 
-
+//TODO перенести в common и переименовать без 2
+//TODO разобраться какие поля тут нужны
+@Builder
 @Data
-public class OrderEvent implements Event {
-
-    private String name;
-    private String lastName;
-
-    public OrderEvent() {
-    }
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderEvent {
+    private UUID uuid;
+    private HashMap<Long, Integer> productItemsIdAndCount;
+    private OrderStatus orderStatus;
 
 }

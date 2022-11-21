@@ -3,17 +3,18 @@ package com.christinagorina.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 @Data
 public class OrderDto {
 
-    public String uuid;
-    public Long  userId;
-    public List<Long> itemIds;
-    public Boolean point;
-    public Long  pointId;
-    public String address;
-    public BigDecimal price;
+    private UUID uuid;
+    private Long  userId;
+    private HashMap<Long, Integer> productItemsIdAndCount;
+    private Boolean point;
+    private Long  pointId;
+    private String address;
+    private BigDecimal price;
 
 }
