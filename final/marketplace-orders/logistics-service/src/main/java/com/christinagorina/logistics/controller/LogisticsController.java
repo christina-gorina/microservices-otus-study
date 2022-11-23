@@ -34,30 +34,43 @@ public class LogisticsController {
     @PostMapping("/api/warehouse")
     public String create(@RequestBody WarehouseDto warehouseDto) {
         log.info("warehouseDto qwe = " + warehouseDto);
-        personRepository.save(new Person("Dostoevsky"));
+       // personRepository.save(new Person("Dostoevsky"));
 
         System.out.println("\n\n\n----------------------------------------------\n\n");
         System.out.println("Авторы в БД:");
-        personRepository.findAll().forEach(p -> System.out.println(p.getName()));
+        //personRepository.findAll().forEach(p -> System.out.println(p.getName()));
+        personRepository.findAll().forEach(System.out::println);
         System.out.println("\n\n----------------------------------------------\n\n\n");
 
-
-        //if (mongoClient == null) {
-            MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
-            //db = mongoClient.getDatabase("myMongoDb");
-            db = mongoClient.getDatabase("company");
-            collection = db.getCollection("places");
-            collection.deleteMany(new Document());
-            collection.createIndex(Indexes.geo2dsphere("location"));
-            collection.insertOne(Document.parse("{'name':'Big Ben','location': {'coordinates':[-0.1268194,51.5007292],'type':'Point'}}"));
-            collection.insertOne(Document.parse("{'name':'Hyde Park','location': {'coordinates': [[[-0.159381,51.513126],[-0.189615,51.509928],[-0.187373,51.502442], [-0.153019,51.503464],[-0.159381,51.513126]]],'type':'Polygon'}}"));
-       // }
-
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        //db = mongoClient.getDatabase("myMongoDb");
+        db = mongoClient.getDatabase("company");
+        collection = db.getCollection("persons");
+        collection.createIndex(Indexes.geo2dsphere("location"));
         Point currentLoc = new Point(new Position(-0.126821, 51.495885));
         FindIterable<Document> result = collection.find(Filters.near("location", currentLoc, 1000.0, 10.0));
 
         System.out.println("\n\n----------------------------------------------\n\n\n");
-        System.out.println("is Big Ben = " + result.first().get("name"));
+        System.out.println("is Lermontov = " + result.first().get("name"));
+        System.out.println("\n\n----------------------------------------------\n\n\n");
+
+
+        //if (mongoClient == null) {
+           // MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+            //db = mongoClient.getDatabase("myMongoDb");
+           // db = mongoClient.getDatabase("company");
+            //collection = db.getCollection("places");
+           // collection.deleteMany(new Document());
+          //  collection.createIndex(Indexes.geo2dsphere("location"));
+          //  collection.insertOne(Document.parse("{'name':'Big Ben','location': {'coordinates':[-0.1268194,51.5007292],'type':'Point'}}"));
+          //  collection.insertOne(Document.parse("{'name':'Hyde Park','location': {'coordinates': [[[-0.159381,51.513126],[-0.189615,51.509928],[-0.187373,51.502442], [-0.153019,51.503464],[-0.159381,51.513126]]],'type':'Polygon'}}"));
+       // }
+
+        //Point currentLoc = new Point(new Position(-0.126821, 51.495885));
+        //FindIterable<Document> result = collection.find(Filters.near("location", currentLoc, 1000.0, 10.0));
+
+       // System.out.println("\n\n----------------------------------------------\n\n\n");
+       // System.out.println("is Big Ben = " + result.first().get("name"));
 
 
         return "WarehouseDto success";
