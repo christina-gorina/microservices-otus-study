@@ -13,11 +13,13 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "productItem")
-public class ProductItem {
+@Document(collection = "reserve")
+public class Reserve {
 
     @Id
-    private Long id;
-    private UUID uuid;
-    private Integer warehouseCount;
+    private String id;
+    private UUID orderUUID;
+    private ProductItem productItem;
+    private Integer count;
+
 }

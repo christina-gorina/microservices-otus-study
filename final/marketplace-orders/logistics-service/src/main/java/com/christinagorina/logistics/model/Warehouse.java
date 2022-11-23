@@ -1,8 +1,9 @@
-package com.christinagorina.logistics.model;//TODO исправить
-/*
 package com.christinagorina.logistics.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,15 +13,13 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "warehouse")
+@Document(collection = "warehouses")
 public class Warehouse {
 
     @Id
-    public String id;
-    public String name;
-    private String address;
-    private String gps;
+    private String id;
+    private String name;
+    private Location location;
     private List<ProductItem> productItems;
-
+    private List<Reserve> reserve; //TODO возможно сделать отдельной коллекцией
 }
-*/

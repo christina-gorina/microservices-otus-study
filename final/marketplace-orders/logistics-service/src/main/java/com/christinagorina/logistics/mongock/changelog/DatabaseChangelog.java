@@ -1,33 +1,35 @@
 package com.christinagorina.logistics.mongock.changelog;
 
-import com.christinagorina.logistics.repostory.PersonRepository;
 import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import com.christinagorina.logistics.model.Person;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ChangeLog
 public class DatabaseChangelog {
 
-    @ChangeSet(order = "001", id = "dropDb", author = "stvort", runAlways = true)
+    @ChangeSet(order = "001", id = "dropDb", author = "kris", runAlways = true)
     public void dropDb(MongoDatabase db) {
         db.drop();
     }
 
-    @ChangeSet(order = "002", id = "insertLermontov", author = "ydvorzhetskiy")
-    public void insertLermontov(MongoDatabase db) {
-        MongoCollection<Document> myCollection = db.getCollection("persons");
-        //var doc = new Document().append("name", "Lermontov");
-        //var doc = Document.parse("{\"name\": \"Lermontov\"}");
-        var doc2 = Document.parse("{'name':'Lermontov','location': {'coordinates':[-0.1268194,51.5007292],'type':'Point'}}");
-        //myCollection.insertOne(doc);
-        myCollection.insertOne(doc2);
+    @ChangeSet(order = "002", id = "insertWarehouse", author = "kris")
+    public void insertWarehouse(MongoDatabase db) {
+        MongoCollection<Document> warehouseCollection = db.getCollection("warehouses");
+        List<Document> warehouseList = new ArrayList<>();
+        var warehouse1 = Document.parse("{'name':'Yangelya','location': {'coordinates':[55.594575, 37.599154],'type':'Point'}}");
+        var warehouse2 = Document.parse("{'name':'Pragskaya','location': {'coordinates':[55.614403, 37.606506],'type':'Point'}}");
+        var warehouse3 = Document.parse("{'name':'Yugnaya','location': {'coordinates':[55.621719, 37.611742],'type':'Point'}}");
+        var warehouse4 = Document.parse("{'name':'Chertanovskaya','location': {'coordinates':[55.640432, 37.607936],'type':'Point'}}");
+        warehouseList.add(warehouse1);
+        warehouseList.add(warehouse2);
+        warehouseList.add(warehouse3);
+        warehouseList.add(warehouse4);
+        warehouseCollection.insertMany(warehouseList);
     }
 
-   // @ChangeSet(order = "003", id = "insertPushkin", author = "stvort")
-   // public void insertPushkin(PersonRepository repository) {
-   //     repository.save(new Person("Pushkin"));
-   // }
 }

@@ -4,17 +4,15 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
-@Document(collection = "persons")
-public class Person {
+@Document(collection = "location")
+public class Location {
 
     @Id
     private String id;
-    private String name;
-    private Location location;
-
-    public Person(String name) {
-        this.name = name;
-    }
+    private List<Float> coordinates;
+    private String type;
 
 }
