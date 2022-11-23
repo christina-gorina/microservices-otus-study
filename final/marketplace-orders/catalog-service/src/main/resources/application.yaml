@@ -19,6 +19,8 @@ spring.cloud.stream:
   bindings:
     catalogProcessor-in-0:
       destination: order-event
+    catalogProcessor-out-0:
+      destination: catalog-event
 
 server:
   port: 8092

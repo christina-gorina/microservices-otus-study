@@ -29,6 +29,8 @@ public class OrderMapper {
                 .uuid(order.getUuid())
                 .productItemsIdAndCount(orderDto.getProductItemsIdAndCount())
                 .orderStatus(order.getOrderStatus())
+                .userId(order.getUserId())
+                .price(order.getPrice())
                 .build();
 
     }

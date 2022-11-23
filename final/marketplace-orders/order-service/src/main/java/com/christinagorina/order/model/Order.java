@@ -1,6 +1,7 @@
 package com.christinagorina.order.model;
 
-import com.christinagorina.events.order.OrderStatus;
+import com.christinagorina.status.OrderStatus;
+import com.christinagorina.status.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

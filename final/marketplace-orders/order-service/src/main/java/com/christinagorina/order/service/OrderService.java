@@ -4,8 +4,8 @@ import com.christinagorina.dto.OrderDto;
 import com.christinagorina.order.mapper.OrderMapper;
 import com.christinagorina.order.model.Order;
 import com.christinagorina.events.order.OrderEvent;
-import com.christinagorina.events.order.OrderStatus;
-import com.christinagorina.order.model.PaymentStatus;
+import com.christinagorina.status.OrderStatus;
+import com.christinagorina.status.PaymentStatus;
 import com.christinagorina.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Sinks;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -30,7 +29,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional(rollbackFor = Exception.class) //TODO !!!Рассказать на защите можно
-    public String createOrder(OrderDto orderDto) throws IOException {
+    public String createOrder(OrderDto orderDto) {
         log.info("createOrder qwe start");
         Order order = Optional.ofNullable(orderDto).map(orderMapper::orderDtoToOrder).orElseThrow(IllegalArgumentException::new);
         log.info("orderMapper order qwe = " + order);

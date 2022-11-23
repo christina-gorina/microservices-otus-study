@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:orderdb
-
+    url: jdbc:h2:mem:billingdb
+    initialization-mode: always
   jpa:
     generate-ddl: true
     properties:
@@ -15,15 +15,13 @@ spring:
 
 spring.cloud.stream:
   function:
-    definition: orderSupplier
+    definition: billingProcessor
   bindings:
-    orderSupplier-out-0:
+    billingProcessor-in-0:
       destination: order-event
-    catalogConsumer-in-0:
-      destination: catalog-event
+    billingProcessor-out-0:
+      destination: billing-event
 
 server:
-  port: 8091
-
-
+  port: 8092
 

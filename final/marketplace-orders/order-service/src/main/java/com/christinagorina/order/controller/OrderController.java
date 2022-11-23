@@ -17,7 +17,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/api/order")
-    public String create(@RequestBody OrderDto orderDto) throws IOException {
+    public String create(@RequestBody OrderDto orderDto) {
         log.info("order qwe = " + orderDto);
         return orderService.createOrder(orderDto);
     }

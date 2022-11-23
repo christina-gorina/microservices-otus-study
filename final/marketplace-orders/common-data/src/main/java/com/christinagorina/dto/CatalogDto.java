@@ -8,9 +8,9 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor(staticName = "of")
+@AllArgsConstructor
 public class CatalogDto {
-
+//TODO вынести общие зависимости типа кафки в главный pom
     private UUID orderId;
     private Integer productId;
 

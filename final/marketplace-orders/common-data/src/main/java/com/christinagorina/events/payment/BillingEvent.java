@@ -1,6 +1,6 @@
-package com.christinagorina.events.catalog;
+package com.christinagorina.events.payment;
 
-import com.christinagorina.status.CatalogStatus;
+import com.christinagorina.status.BillingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +12,9 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CatalogEvent {
+public class BillingEvent {
 
     private final UUID eventId = UUID.randomUUID(); //TODO это надо?
-    private CatalogStatus status;
+    private BillingStatus status;
 
 }

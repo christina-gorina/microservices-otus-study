@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +19,9 @@ public class ProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer count;
+    //TODO генерить где-то, использовать по всей системе
+    private UUID uuid;
+    private Integer commonCount;
     private String description;
 
 }

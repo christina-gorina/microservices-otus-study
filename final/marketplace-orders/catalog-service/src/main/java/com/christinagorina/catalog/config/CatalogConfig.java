@@ -3,7 +3,7 @@ package com.christinagorina.catalog.config;
 import com.christinagorina.catalog.service.CatalogService;
 import com.christinagorina.events.catalog.CatalogEvent;
 import com.christinagorina.events.order.OrderEvent;
-import com.christinagorina.events.order.OrderStatus;
+import com.christinagorina.status.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +30,7 @@ public class CatalogConfig {
 
     //TODO Почему так 2_2?
     private Mono<CatalogEvent> process(@NotNull OrderEvent orderEvent){
-        log.info("catalog2 event take qwe = " + orderEvent);
         if(OrderStatus.NEW.equals(orderEvent.getOrderStatus())){
-            log.info("order event is new");
             return Mono.fromSupplier(() -> catalogService.productItemReservation(orderEvent));
         }
         return Mono.fromRunnable(() -> catalogService.cancelProductItemReservation(orderEvent));

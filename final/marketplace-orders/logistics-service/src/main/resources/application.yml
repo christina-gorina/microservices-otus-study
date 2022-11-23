@@ -1,0 +1,20 @@
+spring:
+  data:
+    mongodb:
+      port: 27017
+      database: company
+
+
+
+mongock:
+  runner-type: "ApplicationRunner" # default
+  #runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - com.christinagorina.logistics.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+server:
+  port: 8093
