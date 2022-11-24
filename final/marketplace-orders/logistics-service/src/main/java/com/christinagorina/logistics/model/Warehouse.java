@@ -21,5 +21,5 @@ public class Warehouse {
     private String name;
     private Location location;
     private List<ProductItem> productItems;
-    private List<Reserve> reserve; //TODO возможно сделать отдельной коллекцией
+    private List<Reserve> reserve;
 }

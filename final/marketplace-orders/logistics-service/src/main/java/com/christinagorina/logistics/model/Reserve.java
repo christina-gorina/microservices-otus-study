@@ -19,7 +19,7 @@ public class Reserve {
     @Id
     private String id;
     private UUID orderUUID;
-    private ProductItem productItem;
+    private UUID productItemUUID;
     private Integer count;
 
 }
