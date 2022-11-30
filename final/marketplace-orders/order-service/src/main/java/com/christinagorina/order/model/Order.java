@@ -24,7 +24,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private UUID uuid;
+    private UUID orderUuid;
     private Long  userId;
     private OrderStatus orderStatus;
     private PaymentStatus paymentStatus;

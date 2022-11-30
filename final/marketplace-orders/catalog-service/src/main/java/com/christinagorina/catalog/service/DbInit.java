@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class DbInit {
@@ -17,16 +18,11 @@ public class DbInit {
 
     @PostConstruct
     private void postConstruct() {
-        ProductItem productItem1 = new ProductItem(1L, 10, "productItem1");
-        ProductItem productItem2 = new ProductItem(2L, 12, "productItem2");
-        ProductItem productItem3 = new ProductItem(3L, 3, "productItem3");
-        ProductItem productItem4 = new ProductItem(4L, 37, "productItem4");
-        ProductItem productItem5 = new ProductItem(5L, 6, "productItem5");
-        ProductItem productItem6 = new ProductItem(6L, 18, "productItem6");
-        ProductItem productItem7 = new ProductItem(7L, 14, "productItem7");
-        ProductItem productItem8 = new ProductItem(8L, 30, "productItem8");
-        ProductItem productItem9 = new ProductItem(9L, 24, "productItem9");
-        ProductItem productItem10 = new ProductItem(10L, 15, "productItem10");
+        ProductItem productItem1 = new ProductItem(1L, UUID.fromString("16cb7a21-eb5e-4d41-a176-8f49ca425b0c"), 23, "productItem1");
+        ProductItem productItem2 = new ProductItem(2L, UUID.fromString("261e9635-3ed0-485f-8f28-56aa156958ea"), 45, "productItem2");
+        ProductItem productItem3 = new ProductItem(3L, UUID.fromString("3a48c0ea-0a2c-4d17-97f2-7bc51e8b10f8"), 19, "productItem3");
+        ProductItem productItem4 = new ProductItem(4L, UUID.fromString("44c053f4-f408-4193-906a-4270e978c70c"), 40, "productItem4");
+        ProductItem productItem5 = new ProductItem(5L, UUID.fromString("5188d680-7dfc-4f5a-b6bb-04d7ca14486c"), 30, "productItem5");
 
         List<ProductItem> productItemList = new ArrayList<>();
         productItemList.add(productItem1);
@@ -34,11 +30,6 @@ public class DbInit {
         productItemList.add(productItem3);
         productItemList.add(productItem4);
         productItemList.add(productItem5);
-        productItemList.add(productItem6);
-        productItemList.add(productItem7);
-        productItemList.add(productItem8);
-        productItemList.add(productItem9);
-        productItemList.add(productItem10);
 
         productItemRepository.saveAll(productItemList);
     }

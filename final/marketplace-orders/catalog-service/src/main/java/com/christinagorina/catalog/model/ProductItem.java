@@ -1,11 +1,9 @@
 package com.christinagorina.catalog.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +16,11 @@ public class ProductItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NonNull
+    private UUID uuid;
+    @NonNull
     private Integer count;
+    @NonNull
     private String name;
 
 }

@@ -20,6 +20,6 @@ public class CatalogEvent {
     @NonNull
     private Double addressY;
     @NonNull
-    private Map<Long, Integer> productItemsIdAndCount;
+    private Map<UUID, Integer> productItemsUuidAndCount;
 
 }

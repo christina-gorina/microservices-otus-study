@@ -19,6 +19,7 @@ import reactor.core.publisher.Sinks;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,25 +35,26 @@ public class CatalogService {
         OrderEvent orderEvent = orderEventMsg.getPayload();
         //Todo можно этот момент рассказать на защите
         log.info("qwe1");
-        log.info("qwe1_1 orderEvent.getUuid() = " + orderEvent.getUuid());
-        Optional<OrdersReserve> ordersReserve = ordersReserveRepository.findByUuid(orderEvent.getUuid());
+        log.info("qwe1_1 orderEvent.getOrderUuid() = " + orderEvent.getOrderUuid());
+        Optional<OrdersReserve> ordersReserve = ordersReserveRepository.findByUuid(orderEvent.getOrderUuid());
         log.info("qwe ordersReserve = " + ordersReserve);
         if (ordersReserve.isPresent()) {
             log.info("qwe2");
             return;
         }
         log.info("qwe3");
-        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(orderEvent.getUuid()).build());
+        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(orderEvent.getOrderUuid()).build());
         log.info("qwe4 ordersReserveNew = " + ordersReserveNew);
 
-        boolean checkCountCorrect = orderEvent.getProductItemsIdAndCount().entrySet().stream()
+        boolean checkCountCorrect = orderEvent.getProductItemsUuidAndCount().entrySet().stream()
                 .allMatch(e -> checkCount(e.getKey(), e.getValue()));
+
         log.info("qwe5 checkCountCorrect = " + checkCountCorrect);
         CatalogEvent catalogEvent = CatalogEvent.builder()
                 .addressX(orderEvent.getAddressX())
                 .addressY(orderEvent.getAddressY())
-                .orderuuid(orderEvent.getUuid())
-                .productItemsIdAndCount(orderEvent.getProductItemsIdAndCount())
+                .orderuuid(orderEvent.getOrderUuid())
+                .productItemsUuidAndCount(orderEvent.getProductItemsUuidAndCount())
                 .build();
 
         if (!checkCountCorrect) {
@@ -61,7 +63,8 @@ public class CatalogService {
             log.info("qwe6 catalogEvent = " + catalogEvent);
             //TODO здесь сделать сагу откат, то есть кидать в другой топик
             return;
-        } else{
+        } else {
+            orderEvent.getProductItemsUuidAndCount().forEach(this::reserve);
             log.info("productItemReservation state RESERVED");
             catalogEvent.setStatus(CatalogStatus.RESERVED);
             log.info("qwe6 catalogEvent = " + catalogEvent);
@@ -90,10 +93,18 @@ public class CatalogService {
         log.info("catalogEvent after");
     }
 
-    private Boolean checkCount(Long id, Integer count) {
-        return productItemRepository.findById(id)
+    private Boolean checkCount(UUID uuid, Integer count) {
+        return productItemRepository.findByUuid(uuid)
                 .filter(productItem -> productItem.getCount() - count > 0)
                 .isPresent();
+    }
+
+    private void reserve(UUID uuid, Integer count) {
+        productItemRepository.findByUuid(uuid)
+                .map(productItem -> {
+                    productItem.setCount(productItem.getCount() - count);
+                    return productItem;
+                }).orElseThrow();
     }
 
 }

@@ -14,7 +14,7 @@ public class OrderMapper {
     public Order orderDtoToOrder(@NonNull OrderDto orderDto){
         log.info("orderDtoToOrder qwe start");
         return Order.builder()
-                .uuid(orderDto.getUuid())
+                .orderUuid(orderDto.getOrderUuid())
                 .userId(orderDto.getUserId())
                 .point(orderDto.getPoint())
                 .pointId(orderDto.getPointId())
@@ -27,8 +27,8 @@ public class OrderMapper {
     public OrderEvent orderToOrderEvent(@NonNull Order order, @NonNull OrderDto orderDto){
         log.info("orderToOrderEvent qwe start");
         return OrderEvent.builder()
-                .uuid(order.getUuid())
-                .productItemsIdAndCount(orderDto.getProductItemsIdAndCount())
+                .orderUuid(order.getOrderUuid())
+                .productItemsUuidAndCount(orderDto.getProductItemsUuidAndCount())
                 .orderStatus(order.getOrderStatus())
                 .addressX(order.getAddressX())
                 .addressY(order.getAddressY())

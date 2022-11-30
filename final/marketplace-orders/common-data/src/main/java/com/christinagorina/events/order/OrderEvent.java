@@ -17,9 +17,9 @@ import java.util.UUID;
 public class OrderEvent {
     //TODO проверить остальные модели не надо ли  @NonNull
     @NonNull
-    private UUID uuid;   //TODO это надо? Мб сделать таблицу с логом
+    private UUID orderUuid;
     @NonNull
-    private Map<Long, Integer> productItemsIdAndCount;
+    private Map<UUID, Integer> productItemsUuidAndCount;
     @NonNull
     private OrderStatus orderStatus;
     @NonNull

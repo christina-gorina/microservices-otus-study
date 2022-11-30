@@ -4,17 +4,27 @@ spring:
       port: 27017
       database: logistics
 
-
-
 mongock:
-  runner-type: "ApplicationRunner" # default
-  #runner-type: "InitializingBean"
+  runner-type: "ApplicationRunner"
   change-logs-scan-package:
     - com.christinagorina.logistics.mongock.changelog
   mongo-db:
     write-concern:
       journal: false
     read-concern: local
+
+
+spring.cloud.stream:
+  function:
+    definition: catalogReservedConsumer;
+  bindings:
+    catalogReservedConsumer-in-0:
+      destination: catalog-reserved
+  kafka:
+    bindings:
+      catalogReservedConsumer-in-0:
+        consumer:
+          ack-mode: manual-immediate
 
 server:
   port: 8093

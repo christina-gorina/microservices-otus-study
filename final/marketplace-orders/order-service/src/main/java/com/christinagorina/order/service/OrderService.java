@@ -54,7 +54,7 @@ public class OrderService {
         this.orderSink.tryEmitNext(Optional.ofNullable(orderEvent).orElseThrow(IllegalArgumentException::new));
         // TODO что такое orThrow или orThrowWithCause может можно ошибку кидать в случае чего?
         // this.orderSink.tryEmitNext(Optional.ofNullable(orderEvent).orElseThrow(IllegalArgumentException::new)).orThrow();
-        return "New order with uuid " + orderDto.getUuid() + " created";
+        return "New order with uuid " + orderDto.getOrderUuid() + " created";
 
     }
 
