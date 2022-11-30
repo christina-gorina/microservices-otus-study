@@ -4,6 +4,7 @@ import com.christinagorina.dto.OrderDto;
 import com.christinagorina.order.mapper.OrderMapper;
 import com.christinagorina.order.model.Order;
 import com.christinagorina.events.order.OrderEvent;
+import com.christinagorina.status.LockState;
 import com.christinagorina.status.OrderStatus;
 import com.christinagorina.status.PaymentStatus;
 import com.christinagorina.order.repository.OrderRepository;
@@ -36,13 +37,12 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.NEW);
         order.setPaymentStatus(PaymentStatus.PENDING);
         order.setDateTime(LocalDateTime.now());
+        order.setLockState(LockState.PENDING);
         log.info("order presave qwe = " + order);
         order = orderRepository.save(order);
         log.info("createOrder qwe order = " + order);
         OrderEvent orderEvent = orderMapper.orderToOrderEvent(order, orderDto);
 
-        //TODO проработать ситуацию, когда брокер на стороне получателя получил сообщение, отправил в брокер что он его получил,
-        // а потом упал не успев обработать. Возможно начинать заново обработку по статусу в бд при старте, см ссылки в избранном
 
         //TODO идемпотентность входящих в BFF сообщений
 

@@ -77,14 +77,11 @@ public class LogisticsController {
                                     reservedSave.set(productItemNeedBuy.getWarehouseCount());
                                     //TODO еще OrderUUID заполнить тут
                                     //TODO Reserve сделать полем в warehouse productItems
-                                    Reserve reserve = Reserve.builder().productItemUUID(p.getUuid()).count(needBuy).build();
-                                    warehouses.get(i).getReserve().add(reserve);
+                                    warehouses.get(i).getReserve().add(createReserve(p, needBuy));
                                 } else {
                                     reservedSave.set(reservedSave.get() + p.getWarehouseCount());
                                     //TODO еще OrderUUID заполнить тут
-                                    //TODO вынести общее в функцию
-                                    Reserve reserve = Reserve.builder().productItemUUID(p.getUuid()).count(p.getWarehouseCount()).build();
-                                    warehouses.get(i).getReserve().add(reserve);
+                                    warehouses.get(i).getReserve().add(createReserve(p, p.getWarehouseCount()));
                                 }
                             });
                 }
@@ -94,6 +91,10 @@ public class LogisticsController {
         System.out.println("list warehouses qwe = " + warehouses);
 
         return "WarehouseDto succegss";
+    }
+
+    private Reserve createReserve(ProductItem productItem, Integer count) {
+        return Reserve.builder().productItemUUID(productItem.getUuid()).count(count).build();
     }
 
 }

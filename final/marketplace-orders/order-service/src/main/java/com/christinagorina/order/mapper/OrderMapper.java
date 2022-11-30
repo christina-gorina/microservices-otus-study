@@ -18,7 +18,8 @@ public class OrderMapper {
                 .userId(orderDto.getUserId())
                 .point(orderDto.getPoint())
                 .pointId(orderDto.getPointId())
-                .address(orderDto.getAddress())
+                .addressX(orderDto.getAddressX())
+                .addressY(orderDto.getAddressY())
                 .price(orderDto.getPrice())
                 .build();
     }
@@ -29,6 +30,8 @@ public class OrderMapper {
                 .uuid(order.getUuid())
                 .productItemsIdAndCount(orderDto.getProductItemsIdAndCount())
                 .orderStatus(order.getOrderStatus())
+                .addressX(order.getAddressX())
+                .addressY(order.getAddressY())
                 .userId(order.getUserId())
                 .price(order.getPrice())
                 .build();

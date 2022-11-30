@@ -17,10 +17,11 @@ spring.cloud.stream:
   function:
     definition: orderSupplier
   bindings:
-    orderSupplier-out-0:
-      destination: order-event
     catalogConsumer-in-0:
       destination: catalog-event
+    orderSupplier-out-0:
+      destination: order-event
+
 
 server:
   port: 8091

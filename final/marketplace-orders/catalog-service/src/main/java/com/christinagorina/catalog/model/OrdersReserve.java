@@ -6,20 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product_item")
+@Table(name = "orders_reserve")
 @Builder
-public class ProductItem {
-
+public class OrdersReserve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer count;
-    private String name;
-
+    private UUID uuid;
 }
-

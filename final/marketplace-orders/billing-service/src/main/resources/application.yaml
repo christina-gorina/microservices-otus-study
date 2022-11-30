@@ -23,5 +23,5 @@ spring.cloud.stream:
       destination: billing-event
 
 server:
-  port: 8092
+  port: 8094
 

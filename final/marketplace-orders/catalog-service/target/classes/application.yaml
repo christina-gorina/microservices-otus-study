@@ -2,25 +2,32 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:catalogdb
-    initialization-mode: always
   jpa:
     generate-ddl: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
   h2.console.enabled: true
+  sql:
+    init:
+      mode: always
 
 spring.cloud.stream:
   function:
-    definition: catalogProcessor
+    definition: catalogProcessor;catalogSupplier;
   bindings:
     catalogProcessor-in-0:
       destination: order-event
-    catalogProcessor-out-0:
-      destination: catalog-event
+    catalogSupplier-out-0:
+      destination: catalog-reserved
+  kafka:
+    bindings:
+      catalogProcessor-in-0:
+        consumer:
+          ack-mode: manual-immediate
 
 server:
   port: 8092

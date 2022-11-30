@@ -1,5 +1,6 @@
 package com.christinagorina.order.model;
 
+import com.christinagorina.status.LockState;
 import com.christinagorina.status.OrderStatus;
 import com.christinagorina.status.PaymentStatus;
 import lombok.AllArgsConstructor;
@@ -29,8 +30,10 @@ public class Order {
     private PaymentStatus paymentStatus;
     private Boolean point;
     private Long  pointId;
-    private String address;
+    private Double addressX;
+    private Double addressY;
     private LocalDateTime dateTime;
     private BigDecimal price;
+    private LockState lockState;
 
 }
