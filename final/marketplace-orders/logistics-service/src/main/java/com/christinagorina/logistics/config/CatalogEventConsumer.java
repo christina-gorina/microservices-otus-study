@@ -25,15 +25,8 @@ public class CatalogEventConsumer {
         return catalogEvent -> {
             log.info("catalogEvent qwe = " + catalogEvent.getPayload());
 //TODO сделать сообщения идемпотентными
-            warehouseService.warehouseReserve(catalogEvent.getPayload());
+            warehouseService.warehouseReserve(catalogEvent);
 
-            //TODO убрать в транзакцию
-            Acknowledgment acknowledgment = catalogEvent.getHeaders().get(KafkaHeaders.ACKNOWLEDGMENT, Acknowledgment.class);
-            if (Objects.nonNull(acknowledgment)) {
-                log.info("acknowledgment != null qwe");
-                acknowledgment.acknowledge();
-                log.info("acknowledgment.acknowledge qwe");
-            }
         };
     }
 

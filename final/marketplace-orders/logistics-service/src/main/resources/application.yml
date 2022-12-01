@@ -13,13 +13,14 @@ mongock:
       journal: false
     read-concern: local
 
-
 spring.cloud.stream:
   function:
-    definition: catalogReservedConsumer;
+    definition: catalogReservedConsumer;logisticsSupplier;
   bindings:
     catalogReservedConsumer-in-0:
       destination: catalog-reserved
+    logisticsSupplier-out-0:
+      destination: logistics-reserved
   kafka:
     bindings:
       catalogReservedConsumer-in-0:

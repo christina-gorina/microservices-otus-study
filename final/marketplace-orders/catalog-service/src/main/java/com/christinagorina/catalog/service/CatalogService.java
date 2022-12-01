@@ -4,8 +4,8 @@ import com.christinagorina.catalog.model.OrdersReserve;
 import com.christinagorina.catalog.repository.OrdersReserveRepository;
 import com.christinagorina.catalog.repository.ProductItemRepository;
 import com.christinagorina.events.catalog.CatalogEvent;
-import com.christinagorina.status.CatalogStatus;
 import com.christinagorina.events.order.OrderEvent;
+import com.christinagorina.status.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.support.Acknowledgment;
@@ -30,7 +30,7 @@ public class CatalogService {
     private final OrdersReserveRepository ordersReserveRepository;
     private final Sinks.Many<Message<CatalogEvent>> catalogSink;
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public void productItemReservation(Message<OrderEvent> orderEventMsg) {
         OrderEvent orderEvent = orderEventMsg.getPayload();
         //Todo можно этот момент рассказать на защите
@@ -43,7 +43,7 @@ public class CatalogService {
             return;
         }
         log.info("qwe3");
-        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(orderEvent.getOrderUuid()).build());
+        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(orderEvent.getOrderUuid()).orderStatus(OrderStatus.RESERVED).build());
         log.info("qwe4 ordersReserveNew = " + ordersReserveNew);
 
         boolean checkCountCorrect = orderEvent.getProductItemsUuidAndCount().entrySet().stream()
@@ -59,14 +59,14 @@ public class CatalogService {
 
         if (!checkCountCorrect) {
             log.info("productItemReservation state REJECTED");
-            catalogEvent.setStatus(CatalogStatus.REJECTED);
+            catalogEvent.setStatus(OrderStatus.REJECTED);
             log.info("qwe6 catalogEvent = " + catalogEvent);
             //TODO здесь сделать сагу откат, то есть кидать в другой топик
             return;
         } else {
             orderEvent.getProductItemsUuidAndCount().forEach(this::reserve);
             log.info("productItemReservation state RESERVED");
-            catalogEvent.setStatus(CatalogStatus.RESERVED);
+            catalogEvent.setStatus(OrderStatus.RESERVED);
             log.info("qwe6 catalogEvent = " + catalogEvent);
         }
 

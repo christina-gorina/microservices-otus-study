@@ -17,7 +17,7 @@ public class BillingService {
 
     private final AccountRepository accountRepository;
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.REPEATABLE_READ) //TODO точно не SERIALIZABLE?
     public BillingEvent paymentReservation(OrderEvent orderEvent) {
         return accountRepository.findById(orderEvent.getUserId())
                 .filter(account -> account.getBalance().compareTo(orderEvent.getPrice()) >= 0)
@@ -33,7 +33,7 @@ public class BillingService {
         //TODO все таки сделать поле резерв и списывать деньги в повторяемой транзакци
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.REPEATABLE_READ) //TODO точно не SERIALIZABLE?
     public void cancelPaymentReservation(OrderEvent orderEvent) {
 
     }

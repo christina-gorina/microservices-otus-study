@@ -1,6 +1,6 @@
 package com.christinagorina.events.catalog;
 
-import com.christinagorina.status.CatalogStatus;
+import com.christinagorina.status.OrderStatus;
 import lombok.*;
 
 import java.util.Map;
@@ -14,7 +14,7 @@ public class CatalogEvent {
 
     @NonNull
     private UUID orderuuid;
-    private CatalogStatus status;
+    private OrderStatus status;
     @NonNull
     private Double addressX;
     @NonNull
