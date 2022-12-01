@@ -17,11 +17,15 @@ spring.cloud.stream:
   function:
     definition: orderSupplier
   bindings:
-    catalogConsumer-in-0:
-      destination: catalog-event
     orderSupplier-out-0:
       destination: order-event
-
+  kafka:
+    bindings:
+      orderSupplier-out-0:
+        producer:
+          configuration:
+            key:
+              serializer: org.apache.kafka.common.serialization.UUIDSerializer
 
 server:
   port: 8091

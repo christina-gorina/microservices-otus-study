@@ -33,6 +33,9 @@ public class CatalogService {
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public void productItemReservation(Message<OrderEvent> orderEventMsg) {
         OrderEvent orderEvent = orderEventMsg.getPayload();
+        if(!OrderStatus.NEW.equals(orderEvent.getOrderStatus())){
+            return;
+        }
         //Todo можно этот момент рассказать на защите
         log.info("qwe1");
         log.info("qwe1_1 orderEvent.getOrderUuid() = " + orderEvent.getOrderUuid());
@@ -53,7 +56,7 @@ public class CatalogService {
         CatalogEvent catalogEvent = CatalogEvent.builder()
                 .addressX(orderEvent.getAddressX())
                 .addressY(orderEvent.getAddressY())
-                .orderuuid(orderEvent.getOrderUuid())
+                .orderUuid(orderEvent.getOrderUuid())
                 .productItemsUuidAndCount(orderEvent.getProductItemsUuidAndCount())
                 .build();
 
@@ -72,6 +75,7 @@ public class CatalogService {
 
         Message<CatalogEvent> catalogEventMsg = MessageBuilder
                 .withPayload(catalogEvent)
+                .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderUuid())
                 .build();
 
         log.info("catalogEventMsg qwe = " + catalogEventMsg);

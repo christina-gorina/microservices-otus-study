@@ -1,5 +1,6 @@
 package com.christinagorina.billing.model;
 
+import com.christinagorina.status.OrderStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,5 +21,6 @@ public class Account {
     private Long  userId;
     @NonNull
     private BigDecimal balance;
+    private OrderStatus orderStatus;
 
 }

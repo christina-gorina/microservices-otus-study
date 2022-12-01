@@ -15,12 +15,12 @@ spring:
 
 spring.cloud.stream:
   function:
-    definition: billingProcessor
+    definition: billingConsumer
   bindings:
-    billingProcessor-in-0:
+    billingConsumer-in-0:
       destination: order-event
-    billingProcessor-out-0:
-      destination: billing-event
+    billingConsumer-in-1:
+      destination: logistics-reserved
 
 server:
   port: 8094

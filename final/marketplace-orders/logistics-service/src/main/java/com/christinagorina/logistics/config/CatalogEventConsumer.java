@@ -1,16 +1,13 @@
 package com.christinagorina.logistics.config;
 
 import com.christinagorina.events.catalog.CatalogEvent;
-import com.christinagorina.logistics.Service.WarehouseService;
+import com.christinagorina.logistics.service.WarehouseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.support.Acknowledgment;
-import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 @Configuration
@@ -24,7 +21,6 @@ public class CatalogEventConsumer {
     public Consumer<Message<CatalogEvent>> catalogReservedConsumer() {
         return catalogEvent -> {
             log.info("catalogEvent qwe = " + catalogEvent.getPayload());
-//TODO сделать сообщения идемпотентными
             warehouseService.warehouseReserve(catalogEvent);
 
         };

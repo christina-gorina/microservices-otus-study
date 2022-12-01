@@ -1,4 +1,4 @@
-package com.christinagorina.logistics.Service;
+package com.christinagorina.logistics.service;
 
 import com.christinagorina.events.catalog.CatalogEvent;
 import com.christinagorina.events.logistics.LogisticsEvent;
@@ -45,16 +45,18 @@ public class WarehouseService {
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public void warehouseReserve(Message<CatalogEvent> catalogEventMsg) {
         CatalogEvent catalogEvent = catalogEventMsg.getPayload();
-        System.out.println("catalogEvent qwe = " + catalogEvent);
+        if(!OrderStatus.RESERVED.equals(catalogEvent.getStatus())){
+            return;
+        }
 
-        Optional<OrdersReserve> ordersReserve = ordersReserveRepository.findByUuid(catalogEvent.getOrderuuid());
+        Optional<OrdersReserve> ordersReserve = ordersReserveRepository.findByUuid(catalogEvent.getOrderUuid());
         log.info("qwe ordersReserve = " + ordersReserve);
         if (ordersReserve.isPresent()) {
             log.info("qwe2");
             return;
         }
         log.info("qwe3");
-        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(catalogEvent.getOrderuuid()).build());
+        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(catalogEvent.getOrderUuid()).build());
         log.info("qwe4 ordersReserveNew = " + ordersReserveNew);
 
         MongoCollection<Document> collection = mongoDatabase.getCollection("warehouses");
@@ -81,11 +83,11 @@ public class WarehouseService {
                                     reservedSave.set(count);
                                     //TODO в подтверждающей транзакции после списания денег менять статус на готов к сборке
                                     p.setWarehouseCount(p.getWarehouseCount() - needBuy);
-                                    warehouses.get(i).getReserve().add(createReserve(p, needBuy, catalogEvent.getOrderuuid()));
+                                    warehouses.get(i).getReserve().add(createReserve(p, needBuy, catalogEvent.getOrderUuid()));
                                 } else {
                                     reservedSave.set(reservedSave.get() + p.getWarehouseCount());
                                     p.setWarehouseCount(0);
-                                    warehouses.get(i).getReserve().add(createReserve(p, p.getWarehouseCount(), catalogEvent.getOrderuuid()));
+                                    warehouses.get(i).getReserve().add(createReserve(p, p.getWarehouseCount(), catalogEvent.getOrderUuid()));
                                 }
                             });
                 }
@@ -98,9 +100,10 @@ public class WarehouseService {
 
         Message<LogisticsEvent> logisticsEventMsg = MessageBuilder
                 .withPayload(LogisticsEvent.builder()
-                        .orderUuid(catalogEvent.getOrderuuid())
+                        .orderUuid(catalogEvent.getOrderUuid())
                         .orderStatus(OrderStatus.RESERVED)
                         .build())
+                .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderUuid())
                 .build();
 
         log.info("logisticsEventMsg qwe = " + logisticsEventMsg);

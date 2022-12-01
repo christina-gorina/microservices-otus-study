@@ -26,6 +26,11 @@ spring.cloud.stream:
       catalogReservedConsumer-in-0:
         consumer:
           ack-mode: manual-immediate
+        producer:
+          configuration:
+            key:
+              serializer: org.apache.kafka.common.serialization.UUIDSerializer
+
 
 server:
   port: 8093

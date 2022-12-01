@@ -13,7 +13,7 @@ import java.util.UUID;
 public class CatalogEvent {
 
     @NonNull
-    private UUID orderuuid;
+    private UUID orderUuid;
     private OrderStatus status;
     @NonNull
     private Double addressX;
