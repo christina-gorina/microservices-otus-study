@@ -21,5 +21,6 @@ public class OrdersReserve {
     private Long id;
     private UUID uuid;
     private OrderStatus orderStatus;
+    //TODO Везде, во всех сервисах переименовать в orderIdempotenciv
     //TODO возможно для откатывающей транзакции здесь статус и товары с количеством завести
 }

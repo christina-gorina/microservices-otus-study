@@ -102,6 +102,7 @@ public class WarehouseService {
                 .withPayload(LogisticsEvent.builder()
                         .orderUuid(catalogEvent.getOrderUuid())
                         .orderStatus(OrderStatus.RESERVED)
+                        .userId(catalogEvent.getUserId())
                         .build())
                 .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderUuid())
                 .build();

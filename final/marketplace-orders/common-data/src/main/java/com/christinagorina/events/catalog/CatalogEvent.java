@@ -21,5 +21,6 @@ public class CatalogEvent {
     private Double addressY;
     @NonNull
     private Map<UUID, Integer> productItemsUuidAndCount;
+    private Long userId;
 
 }

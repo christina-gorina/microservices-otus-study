@@ -28,10 +28,15 @@ spring.cloud.stream:
       catalogProcessor-in-0:
         consumer:
           ack-mode: manual-immediate
+      catalogSupplier-out-0:
         producer:
           configuration:
             key:
               serializer: org.apache.kafka.common.serialization.UUIDSerializer
+
+
+
+
 
 server:
   port: 8092

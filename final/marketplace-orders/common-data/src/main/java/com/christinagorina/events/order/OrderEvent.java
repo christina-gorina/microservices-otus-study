@@ -18,16 +18,13 @@ public class OrderEvent {
     //TODO проверить остальные модели не надо ли  @NonNull
     @NonNull
     private UUID orderUuid;
-    @NonNull
     private Map<UUID, Integer> productItemsUuidAndCount;
     @NonNull
     private OrderStatus orderStatus;
-    @NonNull
     private Long userId;
-    @NonNull
     private BigDecimal price;
-    @NonNull
     private Double addressX;
-    @NonNull
     private Double addressY;
+
+    private String isOrderEvent;
 }

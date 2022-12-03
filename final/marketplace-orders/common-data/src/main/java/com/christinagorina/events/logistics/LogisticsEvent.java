@@ -16,4 +16,8 @@ public class LogisticsEvent {
     @NonNull
     private OrderStatus orderStatus;
 
+    private String isLogisticsEvent;
+
+    private Long userId;
+
 }
