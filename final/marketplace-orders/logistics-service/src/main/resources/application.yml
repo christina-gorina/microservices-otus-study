@@ -30,7 +30,7 @@ spring.cloud.stream:
         producer:
           configuration:
             key:
-              serializer: org.apache.kafka.common.serialization.UUIDSerializer
+              serializer: org.apache.kafka.common.serialization.LongSerializer
 
 
 server:

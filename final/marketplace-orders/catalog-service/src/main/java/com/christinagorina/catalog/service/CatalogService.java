@@ -1,7 +1,7 @@
 package com.christinagorina.catalog.service;
 
-import com.christinagorina.catalog.model.OrdersReserve;
-import com.christinagorina.catalog.repository.OrdersReserveRepository;
+import com.christinagorina.catalog.model.OrdersIdempotent;
+import com.christinagorina.catalog.repository.OrdersIdempotentRepository;
 import com.christinagorina.catalog.repository.ProductItemRepository;
 import com.christinagorina.events.catalog.CatalogEvent;
 import com.christinagorina.events.order.OrderEvent;
@@ -27,7 +27,7 @@ import java.util.UUID;
 public class CatalogService {
 
     private final ProductItemRepository productItemRepository;
-    private final OrdersReserveRepository ordersReserveRepository;
+    private final OrdersIdempotentRepository ordersIdempotentRepository;
     private final Sinks.Many<Message<CatalogEvent>> catalogSink;
 
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
@@ -39,17 +39,17 @@ public class CatalogService {
         }
         //Todo можно этот момент рассказать на защите
         log.info("qwe1");
-        log.info("qwe1_1 orderEvent.getOrderUuid() = " + orderEvent.getOrderUuid());
-        Optional<OrdersReserve> ordersReserve = ordersReserveRepository.findByUuid(orderEvent.getOrderUuid());
-        log.info("qwe ordersReserve = " + ordersReserve);
-        if (ordersReserve.isPresent()) {
+        log.info("qwe1_1 orderEvent.getOrderId() = " + orderEvent.getOrderId());
+        Optional<OrdersIdempotent> ordersIdempotent = ordersIdempotentRepository.findByOrderId(orderEvent.getOrderId());
+        log.info("qwe ordersIdempotent = " + ordersIdempotent);
+        if (ordersIdempotent.isPresent()) {
             log.info("qwe2");
             //TODO Везде, во всех сервисах в такой ситуации (где return) отсылать ask иначе сообщение так и будет приходить
             return;
         }
         log.info("qwe3");
-        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(orderEvent.getOrderUuid()).orderStatus(OrderStatus.RESERVED).build());
-        log.info("qwe4 ordersReserveNew = " + ordersReserveNew);
+        OrdersIdempotent ordersIdempotentNew = ordersIdempotentRepository.save(OrdersIdempotent.builder().orderId(orderEvent.getOrderId()).orderStatus(OrderStatus.RESERVED).build());
+        log.info("qwe4 ordersIdempotentNew = " + ordersIdempotentNew);
 
         boolean checkCountCorrect = orderEvent.getProductItemsUuidAndCount().entrySet().stream()
                 .allMatch(e -> checkCount(e.getKey(), e.getValue()));
@@ -58,7 +58,7 @@ public class CatalogService {
         CatalogEvent catalogEvent = CatalogEvent.builder()
                 .addressX(orderEvent.getAddressX())
                 .addressY(orderEvent.getAddressY())
-                .orderUuid(orderEvent.getOrderUuid())
+                .orderId(orderEvent.getOrderId())
                 .productItemsUuidAndCount(orderEvent.getProductItemsUuidAndCount())
                 .userId(orderEvent.getUserId())
                 .build();
@@ -79,7 +79,7 @@ public class CatalogService {
 
         Message<CatalogEvent> catalogEventMsg = MessageBuilder
                 .withPayload(catalogEvent)
-                .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderUuid())
+                .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderId())
                 .build();
 
         log.info("catalogEventMsg qwe = " + catalogEventMsg);

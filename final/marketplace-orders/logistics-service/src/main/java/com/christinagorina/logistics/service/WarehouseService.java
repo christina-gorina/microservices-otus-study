@@ -2,11 +2,11 @@ package com.christinagorina.logistics.service;
 
 import com.christinagorina.events.catalog.CatalogEvent;
 import com.christinagorina.events.logistics.LogisticsEvent;
-import com.christinagorina.logistics.model.OrdersReserve;
+import com.christinagorina.logistics.model.OrdersIdempotent;
 import com.christinagorina.logistics.model.ProductItem;
 import com.christinagorina.logistics.model.Reserve;
 import com.christinagorina.logistics.model.Warehouse;
-import com.christinagorina.logistics.repostory.OrdersReserveRepository;
+import com.christinagorina.logistics.repostory.OrdersoIdempotentRepository;
 import com.christinagorina.logistics.repostory.WarehouseRepository;
 import com.christinagorina.status.OrderStatus;
 import com.mongodb.client.MongoCollection;
@@ -39,7 +39,7 @@ public class WarehouseService {
 
     private final MongoDatabase mongoDatabase;
     private final WarehouseRepository warehouseRepository;
-    private final OrdersReserveRepository ordersReserveRepository;
+    private final OrdersoIdempotentRepository ordersoIdempotentRepository;
     private final Sinks.Many<Message<LogisticsEvent>> logisticsSink;
 
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
@@ -49,15 +49,15 @@ public class WarehouseService {
             return;
         }
 
-        Optional<OrdersReserve> ordersReserve = ordersReserveRepository.findByUuid(catalogEvent.getOrderUuid());
+        Optional<OrdersIdempotent> ordersReserve = ordersoIdempotentRepository.findByOrderId(catalogEvent.getOrderId());
         log.info("qwe ordersReserve = " + ordersReserve);
         if (ordersReserve.isPresent()) {
             log.info("qwe2");
             return;
         }
         log.info("qwe3");
-        OrdersReserve ordersReserveNew = ordersReserveRepository.save(OrdersReserve.builder().uuid(catalogEvent.getOrderUuid()).build());
-        log.info("qwe4 ordersReserveNew = " + ordersReserveNew);
+        OrdersIdempotent ordersIdempotentNew = ordersoIdempotentRepository.save(OrdersIdempotent.builder().orderId(catalogEvent.getOrderId()).build());
+        log.info("qwe4 ordersIdempotentNew = " + ordersIdempotentNew);
 
         MongoCollection<Document> collection = mongoDatabase.getCollection("warehouses");
         collection.createIndex(Indexes.geo2dsphere("location"));
@@ -83,11 +83,11 @@ public class WarehouseService {
                                     reservedSave.set(count);
                                     //TODO в подтверждающей транзакции после списания денег менять статус на готов к сборке
                                     p.setWarehouseCount(p.getWarehouseCount() - needBuy);
-                                    warehouses.get(i).getReserve().add(createReserve(p, needBuy, catalogEvent.getOrderUuid()));
+                                    warehouses.get(i).getReserve().add(createReserve(p, needBuy, catalogEvent.getOrderId()));
                                 } else {
                                     reservedSave.set(reservedSave.get() + p.getWarehouseCount());
                                     p.setWarehouseCount(0);
-                                    warehouses.get(i).getReserve().add(createReserve(p, p.getWarehouseCount(), catalogEvent.getOrderUuid()));
+                                    warehouses.get(i).getReserve().add(createReserve(p, p.getWarehouseCount(), catalogEvent.getOrderId()));
                                 }
                             });
                 }
@@ -100,11 +100,11 @@ public class WarehouseService {
 
         Message<LogisticsEvent> logisticsEventMsg = MessageBuilder
                 .withPayload(LogisticsEvent.builder()
-                        .orderUuid(catalogEvent.getOrderUuid())
+                        .orderId(catalogEvent.getOrderId())
                         .orderStatus(OrderStatus.RESERVED)
                         .userId(catalogEvent.getUserId())
                         .build())
-                .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderUuid())
+                .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderId())
                 .build();
 
         log.info("logisticsEventMsg qwe = " + logisticsEventMsg);
@@ -123,13 +123,13 @@ public class WarehouseService {
         }
     }
 
-    private Reserve createReserve(ProductItem productItem, Integer count, UUID orderuuid) {
+    private Reserve createReserve(ProductItem productItem, Integer count, Long orderId) {
         return Reserve.builder()
                 .id(UUID.randomUUID())
                 .productItemUUID(productItem.getUuid())
                 .count(count)
                 .orderStatus(OrderStatus.RESERVED)
-                .orderUUID(orderuuid)
+                .orderId(orderId)
                 .build();
     }
 }

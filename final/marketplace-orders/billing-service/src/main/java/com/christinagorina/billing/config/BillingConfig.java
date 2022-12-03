@@ -35,15 +35,15 @@ public class BillingConfig {
 
     @Bean
     //TODO поменяла ключ с uuid на long
-    public BiConsumer<KStream<String, OrderEvent>, KStream<String, LogisticsEvent>> billingConsumer() {
+    public BiConsumer<KStream<Long, OrderEvent>, KStream<Long, LogisticsEvent>> billingConsumer() {
         //TODO сделать идемпотентность
         //TODO условие если ордер new здесь и во всех сервисах
         return (orderEventStream, logisticsEventStream) -> {
-            orderEventStream.peek((m1, n1) -> log.info("orderEvent qwe = " + " m1 = " + m1 + " body1 = " + n1.getOrderUuid()));
-            orderEventStream.peek((m2, n2) -> log.info("logisticsEvent qwe = " + " m2 = " + m2 + " body2 = " + n2.getOrderUuid()));
+            orderEventStream.peek((m1, n1) -> log.info("orderEvent qwe = " + " m1 = " + m1 + " getOrderId = " + n1.getOrderId()));
+            orderEventStream.peek((m2, n2) -> log.info("logisticsEvent qwe = " + " m2 = " + m2 + " getOrderId = " + n2.getOrderId()));
             orderEventStream
-                    .selectKey((k1, v1) -> v1.getUserId())
-                    .join(logisticsEventStream.selectKey((k2, v2) -> v2.getUserId()), //TODO getUserId просто для теста, так как он long
+                    .selectKey((k1, v1) -> v1.getOrderId())
+                    .join(logisticsEventStream.selectKey((k2, v2) -> v2.getOrderId()), //TODO getUserId просто для теста, так как он long
                             this::execute
                             , JoinWindows.of(Duration.ofSeconds(60))
                             , StreamJoined.with(Serdes.Long(), new JsonSerde<>(OrderEvent.class), new JsonSerde<>(LogisticsEvent.class))
@@ -81,8 +81,8 @@ public class BillingConfig {
     */
 
     private String execute(OrderEvent orderEvent, LogisticsEvent logisticsEvent) {
-        log.info("orderEvent qwe {}", orderEvent);
-        log.info("logisticsEvent qwe {}", logisticsEvent);
+        log.info("orderEvent execute qwe {}", orderEvent);
+        log.info("logisticsEvent execute qwe {}", logisticsEvent);
         return "sdfsdf";
     }
 }

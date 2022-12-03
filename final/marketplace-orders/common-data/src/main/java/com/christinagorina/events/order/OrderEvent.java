@@ -17,7 +17,7 @@ import java.util.UUID;
 public class OrderEvent {
     //TODO проверить остальные модели не надо ли  @NonNull
     @NonNull
-    private UUID orderUuid;
+    private Long orderId;
     private Map<UUID, Integer> productItemsUuidAndCount;
     @NonNull
     private OrderStatus orderStatus;
@@ -25,6 +25,4 @@ public class OrderEvent {
     private BigDecimal price;
     private Double addressX;
     private Double addressY;
-
-    private String isOrderEvent;
 }

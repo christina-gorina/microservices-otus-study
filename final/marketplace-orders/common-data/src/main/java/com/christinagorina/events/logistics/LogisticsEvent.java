@@ -12,7 +12,7 @@ import java.util.UUID;
 public class LogisticsEvent {
 
     @NonNull
-    private UUID orderUuid;
+    private Long orderId;
     @NonNull
     private OrderStatus orderStatus;
 

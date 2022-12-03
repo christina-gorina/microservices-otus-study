@@ -48,7 +48,7 @@ public class OrderService {
 
         Message<OrderEvent> orderEventMsg = MessageBuilder
                 .withPayload(orderEvent)
-                .setHeader(KafkaHeaders.MESSAGE_KEY, order.getOrderUuid())
+                .setHeader(KafkaHeaders.MESSAGE_KEY, order.getId())
                 .build();
         log.info("orderEventMsg qwe = " + orderEventMsg);
 

@@ -27,7 +27,7 @@ public class OrderMapper {
     public OrderEvent orderToOrderEvent(@NonNull Order order, @NonNull OrderDto orderDto){
         log.info("orderToOrderEvent qwe start");
         return OrderEvent.builder()
-                .orderUuid(order.getOrderUuid())
+                .orderId(order.getId())
                 .productItemsUuidAndCount(orderDto.getProductItemsUuidAndCount())
                 .orderStatus(order.getOrderStatus())
                 .addressX(order.getAddressX())
