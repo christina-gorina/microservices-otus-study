@@ -26,8 +26,7 @@ public class BillingConfig {
     @Bean
     public BiConsumer<KStream<Long, OrderEvent>, KStream<Long, LogisticsEvent>> billingConsumer() {
 
-        //TODO сделать идемпотентность
-        //TODO условие если ордер new здесь и во всех сервисах
+        //TODO условие если ордер new здесь и во всех сервисах или не new если откатывающая
         //TODO здесь и во всех сервисах сделать изменение статуса в БД а не только уменьшение циферки (транзакционно)
         return (orderEventStream, logisticsEventStream) -> {
             orderEventStream.peek((m1, n1) -> log.info("orderEvent qwe" + " m1 = " + m1 + " orderEvent = " + n1));
@@ -40,9 +39,9 @@ public class BillingConfig {
                             , StreamJoined.with(Serdes.Long(), new JsonSerde<>(OrderEvent.class), new JsonSerde<>(LogisticsEvent.class))
                     )
                     .filter((n, billingEvent) -> {
-                       // if (Objects.isNull(billingEvent)) {
-                           // throw new IllegalArgumentException();
-                       // }
+                        if (Objects.isNull(billingEvent)) {
+                            throw new IllegalArgumentException();
+                        }
                         return true;
                     });;
         };

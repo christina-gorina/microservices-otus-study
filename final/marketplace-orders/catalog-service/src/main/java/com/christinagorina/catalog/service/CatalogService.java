@@ -38,7 +38,6 @@ public class CatalogService {
         log.info("qwe ordersIdempotent = " + ordersIdempotent);
         if (ordersIdempotent.isPresent()) {
             log.info("qwe2");
-            //TODO Везде, во всех сервисах в такой ситуации (где return) отсылать ask иначе сообщение так и будет приходить
             acknowledgeEvent(orderEventMsg);
             return;
         }
@@ -64,7 +63,6 @@ public class CatalogService {
             catalogEvent.setStatus(OrderStatus.REJECTED);
             log.info("qwe6 catalogEvent = " + catalogEvent);
             //TODO здесь сделать сагу откат, то есть кидать в другой топик
-            //TODO Везде, во всех сервисах в такой ситуации (где return) отсылать ask иначе сообщение так и будет приходить
             acknowledgeEvent(orderEventMsg);
             return;
         } else {
