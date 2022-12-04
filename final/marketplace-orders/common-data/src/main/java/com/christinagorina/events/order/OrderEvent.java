@@ -16,7 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OrderEvent {
     //TODO проверить остальные модели не надо ли  @NonNull
-    @NonNull
     private Long orderId;
     private Map<UUID, Integer> productItemsUuidAndCount;
     @NonNull

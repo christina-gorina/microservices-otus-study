@@ -1,6 +1,7 @@
 package com.christinagorina.events.payment;
 
 import com.christinagorina.status.BillingStatus;
+import com.christinagorina.status.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class BillingEvent {
 
-    private final UUID eventId = UUID.randomUUID(); //TODO это надо?
-    private BillingStatus status;
+    private Long orderId;
+    private OrderStatus orderStatus;
 
 }
