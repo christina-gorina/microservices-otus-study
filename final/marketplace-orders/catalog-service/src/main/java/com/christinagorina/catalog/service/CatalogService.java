@@ -3,8 +3,8 @@ package com.christinagorina.catalog.service;
 import com.christinagorina.catalog.model.OrdersIdempotent;
 import com.christinagorina.catalog.repository.OrdersIdempotentRepository;
 import com.christinagorina.catalog.repository.ProductItemRepository;
-import com.christinagorina.events.catalog.CatalogEvent;
-import com.christinagorina.events.order.OrderEvent;
+import com.christinagorina.events.CatalogEvent;
+import com.christinagorina.events.OrderEvent;
 import com.christinagorina.status.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ public class CatalogService {
             return;
         }
         log.info("qwe3");
-        OrdersIdempotent ordersIdempotentNew = ordersIdempotentRepository.save(OrdersIdempotent.builder().orderId(orderEvent.getOrderId()).orderStatus(OrderStatus.RESERVED).build());
+        OrdersIdempotent ordersIdempotentNew = ordersIdempotentRepository.save(OrdersIdempotent.builder().orderId(orderEvent.getOrderId()).orderStatus(orderEvent.getOrderStatus()).build());
         log.info("qwe4 ordersIdempotentNew = " + ordersIdempotentNew);
 
         boolean checkCountCorrect = orderEvent.getProductItemsUuidAndCount().entrySet().stream()

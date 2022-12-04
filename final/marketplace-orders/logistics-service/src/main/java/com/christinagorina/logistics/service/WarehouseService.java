@@ -1,7 +1,7 @@
 package com.christinagorina.logistics.service;
 
-import com.christinagorina.events.catalog.CatalogEvent;
-import com.christinagorina.events.logistics.LogisticsEvent;
+import com.christinagorina.events.CatalogEvent;
+import com.christinagorina.events.LogisticsEvent;
 import com.christinagorina.logistics.model.OrdersIdempotent;
 import com.christinagorina.logistics.model.ProductItem;
 import com.christinagorina.logistics.model.Reserve;
@@ -49,9 +49,9 @@ public class WarehouseService {
             return;
         }
 
-        Optional<OrdersIdempotent> ordersReserve = ordersoIdempotentRepository.findByOrderId(catalogEvent.getOrderId());
-        log.info("qwe ordersReserve = " + ordersReserve);
-        if (ordersReserve.isPresent()) {
+        Optional<OrdersIdempotent> ordersIdempotent = ordersoIdempotentRepository.findByOrderId(catalogEvent.getOrderId());
+        log.info("qwe ordersReserve = " + ordersIdempotent);
+        if (ordersIdempotent.isPresent()) {
             log.info("qwe2");
             return;
         }

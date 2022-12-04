@@ -1,4 +1,4 @@
-package com.christinagorina.events.order;
+package com.christinagorina.events;
 
 
 import com.christinagorina.status.OrderStatus;
@@ -8,14 +8,11 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 
-//TODO перенести в common и переименовать без 2
-//TODO разобраться какие поля тут нужны
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderEvent {
-    //TODO проверить остальные модели не надо ли  @NonNull
     private Long orderId;
     private Map<UUID, Integer> productItemsUuidAndCount;
     @NonNull

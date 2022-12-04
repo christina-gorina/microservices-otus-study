@@ -1,4 +1,4 @@
-package com.christinagorina.events.catalog;
+package com.christinagorina.events;
 
 import com.christinagorina.status.OrderStatus;
 import lombok.*;

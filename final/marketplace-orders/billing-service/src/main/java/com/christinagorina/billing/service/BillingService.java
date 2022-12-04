@@ -1,14 +1,14 @@
 package com.christinagorina.billing.service;
 
+import com.christinagorina.billing.model.OrdersIdempotent;
 import com.christinagorina.billing.repository.AccountRepository;
-import com.christinagorina.events.catalog.CatalogEvent;
-import com.christinagorina.events.logistics.LogisticsEvent;
-import com.christinagorina.events.order.OrderEvent;
-import com.christinagorina.events.payment.BillingEvent;
+import com.christinagorina.billing.repository.OrdersIdempotentRepository;
+import com.christinagorina.events.LogisticsEvent;
+import com.christinagorina.events.OrderEvent;
+import com.christinagorina.events.BillingEvent;
 import com.christinagorina.status.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Sinks;
-import java.util.Objects;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +26,21 @@ public class BillingService {
 
     private final AccountRepository accountRepository;
     private final Sinks.Many<Message<BillingEvent>> resultSink;
+    private final OrdersIdempotentRepository ordersIdempotentRepository;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
     public BillingEvent check(OrderEvent orderEvent, LogisticsEvent logisticsEvent) {
+        Optional<OrdersIdempotent> ordersIdempotent = ordersIdempotentRepository.findByOrderId(logisticsEvent.getOrderId());
+        log.info("qwe ordersIdempotent = " + ordersIdempotent);
+        if (ordersIdempotent.isPresent()) {
+            log.info("qwe2");
+            return null;
+        }
+        log.info("qwe3");
+        OrdersIdempotent ordersIdempotentNew = ordersIdempotentRepository.save(OrdersIdempotent.builder().orderId(logisticsEvent.getOrderId()).orderStatus(logisticsEvent.getOrderStatus()).build());
+        log.info("qwe4 ordersIdempotentNew = " + ordersIdempotentNew);
+
+
         log.info("orderEvent checkOrder qwe {}", orderEvent);
         log.info("logisticsEvent checkOrder qwe {}", logisticsEvent);
         if(!(OrderStatus.NEW.equals(orderEvent.getOrderStatus()) || OrderStatus.RESERVED.equals(logisticsEvent.getOrderStatus()))){

@@ -1,7 +1,7 @@
 package com.christinagorina.catalog.config;
 
 import com.christinagorina.catalog.service.CatalogService;
-import com.christinagorina.events.order.OrderEvent;
+import com.christinagorina.events.OrderEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +20,7 @@ public class OrderConsumer {
     @Bean
     public Consumer<Message<OrderEvent>> catalogProcessor() {
         return orderEvent -> {
-            log.info("orderEvent qwe = " + orderEvent.getPayload());
-            //TODO проверить куда должно улететь событие
+            log.info("orderEvent = " + orderEvent.getPayload());
             catalogService.productItemReservation(orderEvent);
         };
     }

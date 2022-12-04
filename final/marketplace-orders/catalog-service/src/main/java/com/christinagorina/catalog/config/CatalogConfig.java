@@ -1,6 +1,6 @@
 package com.christinagorina.catalog.config;
 
-import com.christinagorina.events.catalog.CatalogEvent;
+import com.christinagorina.events.CatalogEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

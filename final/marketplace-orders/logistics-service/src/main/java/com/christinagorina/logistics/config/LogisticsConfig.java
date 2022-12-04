@@ -1,6 +1,6 @@
 package com.christinagorina.logistics.config;
 
-import com.christinagorina.events.logistics.LogisticsEvent;
+import com.christinagorina.events.LogisticsEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

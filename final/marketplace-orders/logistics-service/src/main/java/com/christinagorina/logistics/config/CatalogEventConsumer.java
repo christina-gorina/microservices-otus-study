@@ -1,6 +1,6 @@
 package com.christinagorina.logistics.config;
 
-import com.christinagorina.events.catalog.CatalogEvent;
+import com.christinagorina.events.CatalogEvent;
 import com.christinagorina.logistics.service.WarehouseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

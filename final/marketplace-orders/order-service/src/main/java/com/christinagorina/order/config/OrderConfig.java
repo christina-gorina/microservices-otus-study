@@ -1,6 +1,6 @@
 package com.christinagorina.order.config;
 
-import com.christinagorina.events.order.OrderEvent;
+import com.christinagorina.events.OrderEvent;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
