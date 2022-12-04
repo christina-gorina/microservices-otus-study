@@ -45,14 +45,14 @@ public class WarehouseService {
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public void warehouseReserve(Message<CatalogEvent> catalogEventMsg) {
         CatalogEvent catalogEvent = catalogEventMsg.getPayload();
-        if(!OrderStatus.RESERVED.equals(catalogEvent.getStatus())){
-            return;
-        }
+        AtomicReference<String> userMessage = new AtomicReference<>();
+        userMessage.set("");
 
         Optional<OrdersIdempotent> ordersIdempotent = ordersoIdempotentRepository.findByOrderId(catalogEvent.getOrderId());
         log.info("qwe ordersReserve = " + ordersIdempotent);
         if (ordersIdempotent.isPresent()) {
             log.info("qwe2");
+            acknowledgeEvent(catalogEventMsg);
             return;
         }
         log.info("qwe3");
@@ -63,14 +63,11 @@ public class WarehouseService {
         collection.createIndex(Indexes.geo2dsphere("location"));
 
         Point currentLocAnino = new Point(catalogEvent.getAddressX(), catalogEvent.getAddressY());
-        //TODO еще один адрес с другого конца
-        Point currentLocVarshavskaya = new Point(55.653307, 37.620642);
         Distance distance = new Distance(200, Metrics.KILOMETERS);
 
         GeoResults<Warehouse> gr = warehouseRepository.findByLocationNear(currentLocAnino, distance);
         List<Warehouse> warehouses = new ArrayList<>();
         gr.forEach(r -> warehouses.add(r.getContent()));
-        System.out.println("==============================================");
 
         catalogEvent.getProductItemsUuidAndCount().forEach((itemUuid, count) -> {
             AtomicReference<Integer> reservedSave = new AtomicReference<>(0);
@@ -82,12 +79,20 @@ public class WarehouseService {
                                 if (p.getWarehouseCount() >= needBuy) {
                                     reservedSave.set(count);
                                     //TODO в подтверждающей транзакции после списания денег менять статус на готов к сборке
-                                    p.setWarehouseCount(p.getWarehouseCount() - needBuy);
                                     warehouses.get(i).getReserve().add(createReserve(p, needBuy, catalogEvent.getOrderId()));
+                                    userMessage.set(userMessage + "Товар " + p.getName() +
+                                            " будет доставлен со склада " + warehouses.get(i).getName() +
+                                            " в количестве " + needBuy +
+                                            ";\n");
+                                    p.setWarehouseCount(p.getWarehouseCount() - needBuy);
                                 } else {
                                     reservedSave.set(reservedSave.get() + p.getWarehouseCount());
-                                    p.setWarehouseCount(0);
                                     warehouses.get(i).getReserve().add(createReserve(p, p.getWarehouseCount(), catalogEvent.getOrderId()));
+                                    userMessage.set(userMessage + "Товар " + p.getName() +
+                                            " будет доставлен со склада " + warehouses.get(i).getName() +
+                                            " в количестве " + p.getWarehouseCount() +
+                                            ";\n");
+                                    p.setWarehouseCount(0);
                                 }
                             });
                 }
@@ -103,6 +108,7 @@ public class WarehouseService {
                         .orderId(catalogEvent.getOrderId())
                         .orderStatus(OrderStatus.RESERVED)
                         .userId(catalogEvent.getUserId())
+                        .userMessage(userMessage.get())
                         .build())
                 .setHeader(KafkaHeaders.MESSAGE_KEY, catalogEvent.getOrderId())
                 .build();
@@ -111,15 +117,19 @@ public class WarehouseService {
         Sinks.EmitResult emitResult = logisticsSink.tryEmitNext(logisticsEventMsg);
 
         if (emitResult.isSuccess()) {
-            Acknowledgment acknowledgment = catalogEventMsg.getHeaders().get(KafkaHeaders.ACKNOWLEDGMENT, Acknowledgment.class);
-            if (Objects.nonNull(acknowledgment)) {
-                log.info("acknowledgment != null qwe");
-                acknowledgment.acknowledge();
-                log.info("acknowledgment.acknowledge qwe");
-            }
+            acknowledgeEvent(catalogEventMsg);
         } else {
             log.info("emitResult.orThrow");
             emitResult.orThrow();
+        }
+    }
+
+    private void acknowledgeEvent(Message<CatalogEvent> catalogEventMsg) {
+        Acknowledgment acknowledgment = catalogEventMsg.getHeaders().get(KafkaHeaders.ACKNOWLEDGMENT, Acknowledgment.class);
+        if (Objects.nonNull(acknowledgment)) {
+            log.info("acknowledgment != null qwe");
+            acknowledgment.acknowledge();
+            log.info("acknowledgment.acknowledge qwe");
         }
     }
 

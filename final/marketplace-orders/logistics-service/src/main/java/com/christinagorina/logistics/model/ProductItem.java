@@ -17,6 +17,8 @@ public class ProductItem {
     private String id;
     @NonNull
     private UUID uuid;
+
+    private String name;
     @NonNull
     private Integer warehouseCount;
 

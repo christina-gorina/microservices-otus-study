@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -21,11 +22,14 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private UUID orderUuid;
     private Long  userId;
     private OrderStatus orderStatus;
     private Double addressX;
     private Double addressY;
     private LocalDateTime dateTime;
     private BigDecimal price;
+    @Column(columnDefinition="text")
+    private String userMessage;
 
 }

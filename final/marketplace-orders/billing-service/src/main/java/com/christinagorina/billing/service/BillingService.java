@@ -47,7 +47,7 @@ public class BillingService {
             log.info("billingEvent final REJECTED");
             return BillingEvent.builder().orderId(orderEvent.getOrderId()).orderStatus(OrderStatus.REJECTED).build();
         }
-        BillingEvent billingEvent = paymentReservation(orderEvent);
+        BillingEvent billingEvent = paymentReservation(orderEvent, logisticsEvent);
         log.info("billingEvent final qwe {}", billingEvent);
 
         Message<BillingEvent> billingEventMsg = MessageBuilder
@@ -67,7 +67,7 @@ public class BillingService {
         return billingEvent;
     }
 
-    private BillingEvent paymentReservation(OrderEvent orderEvent) {
+    private BillingEvent paymentReservation(OrderEvent orderEvent, LogisticsEvent logisticsEvent) {
         return accountRepository.findById(orderEvent.getUserId())
                 .filter(account -> account.getBalance().compareTo(orderEvent.getPrice()) >= 0)
                 .map(account -> {
@@ -75,6 +75,7 @@ public class BillingService {
                     return BillingEvent.builder()
                             .orderStatus(OrderStatus.COMPLETED)
                             .orderId(orderEvent.getOrderId())
+                            .userMessage(logisticsEvent.getUserMessage())
                             .build();
                 })
                 .orElse(BillingEvent.builder()

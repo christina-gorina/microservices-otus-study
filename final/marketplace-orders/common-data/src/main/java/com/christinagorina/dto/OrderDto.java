@@ -9,6 +9,7 @@ import java.util.UUID;
 @Data
 public class OrderDto {
 
+    private UUID orderUuid;
     private Long  userId;
     private Map<UUID, Integer> productItemsUuidAndCount;
     private Boolean point;

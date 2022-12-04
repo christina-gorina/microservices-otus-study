@@ -14,5 +14,6 @@ public class BillingEvent {
 
     private Long orderId;
     private OrderStatus orderStatus;
+    private String userMessage;
 
 }

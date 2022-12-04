@@ -33,18 +33,13 @@ public class CatalogService {
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
     public void productItemReservation(Message<OrderEvent> orderEventMsg) {
         OrderEvent orderEvent = orderEventMsg.getPayload();
-        if(!OrderStatus.NEW.equals(orderEvent.getOrderStatus())){
-            return;
-            //TODO Везде, во всех сервисах в такой ситуации (где return) отсылать ask иначе сообщение так и будет приходить
-        }
-        //Todo можно этот момент рассказать на защите
-        log.info("qwe1");
         log.info("qwe1_1 orderEvent.getOrderId() = " + orderEvent.getOrderId());
         Optional<OrdersIdempotent> ordersIdempotent = ordersIdempotentRepository.findByOrderId(orderEvent.getOrderId());
         log.info("qwe ordersIdempotent = " + ordersIdempotent);
         if (ordersIdempotent.isPresent()) {
             log.info("qwe2");
             //TODO Везде, во всех сервисах в такой ситуации (где return) отсылать ask иначе сообщение так и будет приходить
+            acknowledgeEvent(orderEventMsg);
             return;
         }
         log.info("qwe3");
@@ -65,17 +60,21 @@ public class CatalogService {
 
         if (!checkCountCorrect) {
             log.info("productItemReservation state REJECTED");
+            ordersIdempotentNew.setOrderStatus(OrderStatus.REJECTED);
             catalogEvent.setStatus(OrderStatus.REJECTED);
             log.info("qwe6 catalogEvent = " + catalogEvent);
             //TODO здесь сделать сагу откат, то есть кидать в другой топик
             //TODO Везде, во всех сервисах в такой ситуации (где return) отсылать ask иначе сообщение так и будет приходить
+            acknowledgeEvent(orderEventMsg);
             return;
         } else {
             orderEvent.getProductItemsUuidAndCount().forEach(this::reserve);
             log.info("productItemReservation state RESERVED");
+            ordersIdempotentNew.setOrderStatus(OrderStatus.RESERVED);
             catalogEvent.setStatus(OrderStatus.RESERVED);
             log.info("qwe6 catalogEvent = " + catalogEvent);
         }
+        ordersIdempotentRepository.save(ordersIdempotentNew);
 
         Message<CatalogEvent> catalogEventMsg = MessageBuilder
                 .withPayload(catalogEvent)
@@ -88,17 +87,21 @@ public class CatalogService {
 
         if (emitResult.isSuccess()) {
             log.info("emitResult.isSuccess qwe");
-            Acknowledgment acknowledgment = orderEventMsg.getHeaders().get(KafkaHeaders.ACKNOWLEDGMENT, Acknowledgment.class);
-            if (Objects.nonNull(acknowledgment)) {
-                log.info("acknowledgment != null qwe");
-                acknowledgment.acknowledge();
-                log.info("acknowledgment.acknowledge qwe");
-            }
+            acknowledgeEvent(orderEventMsg);
         } else {
             log.info("emitResult.orThrow");
             emitResult.orThrow();
         }
         log.info("catalogEvent after");
+    }
+
+    private void acknowledgeEvent(Message<OrderEvent> orderEventMsg) {
+        Acknowledgment acknowledgment = orderEventMsg.getHeaders().get(KafkaHeaders.ACKNOWLEDGMENT, Acknowledgment.class);
+        if (Objects.nonNull(acknowledgment)) {
+            log.info("acknowledgment != null qwe");
+            acknowledgment.acknowledge();
+            log.info("acknowledgment.acknowledge qwe");
+        }
     }
 
     private Boolean checkCount(UUID uuid, Integer count) {

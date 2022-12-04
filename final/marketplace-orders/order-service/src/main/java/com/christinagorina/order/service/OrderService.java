@@ -19,6 +19,7 @@ import reactor.core.publisher.Sinks;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -55,8 +56,13 @@ public class OrderService {
     public void orderResult(BillingEvent billingEvent) {
         Order order = orderRepository.findById(billingEvent.getOrderId()).orElseThrow();
         order.setOrderStatus(billingEvent.getOrderStatus());
-        orderRepository.save(order);
-        //TODO сделать тут userMessage, где буду сохранять на каком что складе, И ВЫДавать это через контроллер
+        order.setUserMessage(billingEvent.getUserMessage());
+        order = orderRepository.save(order);
+        log.info("order result qwe = " + order);
+    }
+
+    public Order findByOrderUuid(UUID orderUuid) {
+        return orderRepository.findByOrderUuid(orderUuid).orElseThrow();
     }
 
 }

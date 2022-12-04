@@ -17,6 +17,7 @@ public class OrderMapper {
                 .addressX(orderDto.getAddressX())
                 .addressY(orderDto.getAddressY())
                 .price(orderDto.getPrice())
+                .orderUuid(orderDto.getOrderUuid())
                 .build();
     }
 

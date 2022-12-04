@@ -3,6 +3,9 @@ package com.christinagorina.order.repository;
 import com.christinagorina.order.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+import java.util.Optional;
+import java.util.UUID;
 
+public interface OrderRepository extends JpaRepository<Order, Long> {
+    Optional<Order> findByOrderUuid(UUID orderUuid);
 }
