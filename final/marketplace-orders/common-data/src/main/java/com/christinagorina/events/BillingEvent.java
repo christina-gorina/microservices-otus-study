@@ -14,6 +14,6 @@ public class BillingEvent {
 
     private Long orderId;
     private OrderStatus orderStatus;
-    private String userMessage;
+    private String userMessage; //TODO записать сообщение в случае нехватки товаров и денег
 
 }

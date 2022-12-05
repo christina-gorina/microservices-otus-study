@@ -3,6 +3,7 @@ package com.christinagorina.catalog.service;
 import com.christinagorina.catalog.model.OrdersIdempotent;
 import com.christinagorina.catalog.repository.OrdersIdempotentRepository;
 import com.christinagorina.catalog.repository.ProductItemRepository;
+import com.christinagorina.events.BillingEvent;
 import com.christinagorina.events.CatalogEvent;
 import com.christinagorina.events.OrderEvent;
 import com.christinagorina.status.OrderStatus;
@@ -62,9 +63,6 @@ public class CatalogService {
             ordersIdempotentNew.setOrderStatus(OrderStatus.REJECTED);
             catalogEvent.setStatus(OrderStatus.REJECTED);
             log.info("qwe6 catalogEvent = " + catalogEvent);
-            //TODO здесь сделать сагу откат, то есть кидать в другой топик
-            acknowledgeEvent(orderEventMsg);
-            return;
         } else {
             orderEvent.getProductItemsUuidAndCount().forEach(this::reserve);
             log.info("productItemReservation state RESERVED");
@@ -91,6 +89,14 @@ public class CatalogService {
             emitResult.orThrow();
         }
         log.info("catalogEvent after");
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
+    public void saveResult(BillingEvent billingEvent) {
+        OrdersIdempotent ordersIdempotent = ordersIdempotentRepository.findByOrderId(billingEvent.getOrderId()).orElseThrow();
+        ordersIdempotent.setOrderStatus(billingEvent.getOrderStatus());
+        ordersIdempotent = ordersIdempotentRepository.save(ordersIdempotent);
+        log.info("saveResult ordersIdempotent = " + ordersIdempotent);
     }
 
     private void acknowledgeEvent(Message<OrderEvent> orderEventMsg) {

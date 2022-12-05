@@ -1,5 +1,6 @@
 package com.christinagorina.logistics.service;
 
+import com.christinagorina.events.BillingEvent;
 import com.christinagorina.events.CatalogEvent;
 import com.christinagorina.events.LogisticsEvent;
 import com.christinagorina.logistics.model.OrdersIdempotent;
@@ -101,7 +102,6 @@ public class WarehouseService {
 
         List<Warehouse> warehouseList = warehouseRepository.saveAll(warehouses);
         log.info("qwe warehouseList = " + warehouseList);
-        //TODO когда буду статус менять, то искать по Reserve, мб там id надо задать
 
         Message<LogisticsEvent> logisticsEventMsg = MessageBuilder
                 .withPayload(LogisticsEvent.builder()
@@ -122,6 +122,16 @@ public class WarehouseService {
             log.info("emitResult.orThrow");
             emitResult.orThrow();
         }
+    }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
+    public void saveResult(BillingEvent billingEvent) {
+        List<Warehouse> warehouses = warehouseRepository.findAll();
+        List<Reserve> reserves = warehouses.stream().map(Warehouse::getReserve).findFirst().orElseThrow();
+        reserves.stream().filter(r ->r.getOrderId().equals(billingEvent.getOrderId())).forEach(r -> r.setOrderStatus(billingEvent.getOrderStatus()));
+        log.info("saveResult reserves = " + reserves);
+        List<Warehouse> warehouses2 = warehouseRepository.findAll();
+        log.info("saveResult warehouses2 = " + warehouses2);
     }
 
     private void acknowledgeEvent(Message<CatalogEvent> catalogEventMsg) {

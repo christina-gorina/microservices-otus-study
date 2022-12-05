@@ -37,13 +37,13 @@ public class BillingConfig {
                             this::checkOrder
                             , JoinWindows.of(Duration.ofSeconds(60))
                             , StreamJoined.with(Serdes.Long(), new JsonSerde<>(OrderEvent.class), new JsonSerde<>(LogisticsEvent.class))
-                    )
-                    .filter((n, billingEvent) -> {
-                        if (Objects.isNull(billingEvent)) {
-                            throw new IllegalArgumentException();
-                        }
-                        return true;
-                    });;
+                    );
+                   // .filter((n, billingEvent) -> {
+                   //     if (Objects.isNull(billingEvent)) {
+                   //         throw new IllegalArgumentException();
+                    //    }
+                    //    return true;
+                   // });
         };
 
     }

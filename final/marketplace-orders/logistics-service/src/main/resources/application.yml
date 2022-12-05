@@ -15,10 +15,12 @@ mongock:
 
 spring.cloud.stream:
   function:
-    definition: catalogReservedConsumer;logisticsSupplier;
+    definition: catalogReservedConsumer;logisticsSupplier;orderCheckResultConsumer;
   bindings:
     catalogReservedConsumer-in-0:
       destination: catalog-reserved
+    orderCheckResultConsumer-in-0:
+      destination: billing-event
     logisticsSupplier-out-0:
       destination: logistics-reserved
   kafka:

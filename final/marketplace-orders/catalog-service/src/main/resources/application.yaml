@@ -17,10 +17,12 @@ spring:
 
 spring.cloud.stream:
   function:
-    definition: catalogProcessor;catalogSupplier;
+    definition: catalogProcessor;catalogSupplier;orderCheckResultConsumer;
   bindings:
     catalogProcessor-in-0:
       destination: order-event
+    orderCheckResultConsumer-in-0:
+      destination: billing-event
     catalogSupplier-out-0:
       destination: catalog-reserved
   kafka:
