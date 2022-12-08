@@ -34,7 +34,8 @@ public class BillingConfig {
                             this::checkOrder
                             , JoinWindows.of(Duration.ofSeconds(60))
                             , StreamJoined.with(Serdes.Long(), new JsonSerde<>(OrderEvent.class), new JsonSerde<>(LogisticsEvent.class))
-                    );
+                    )
+                    .peek((k, v) -> log.info("Events key = " + k + ", value = " +  v));
         };
 
     }

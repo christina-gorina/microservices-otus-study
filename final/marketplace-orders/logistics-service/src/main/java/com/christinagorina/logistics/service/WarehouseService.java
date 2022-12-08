@@ -129,7 +129,7 @@ public class WarehouseService {
     @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
     public void saveResult(BillingEvent billingEvent) {
         List<Warehouse> warehouses = warehouseRepository.findAll();
-        log.info("saveResult warehouses1 = " + warehouses);
+        log.info("saveResult warehouses = " + warehouses);
         OrderStatus orderStatus = Optional.of(billingEvent).map(BillingEvent::getOrderStatus).orElseThrow();
         Long orderId = Optional.of(billingEvent).map(BillingEvent::getOrderId).orElseThrow();
 
