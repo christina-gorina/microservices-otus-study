@@ -19,9 +19,8 @@ public class ResultConsumer {
 
     @Bean
     public Consumer<Message<BillingEvent>> orderCheckResultConsumer() {
-        log.info("orderCheckResultConsumer qwe");
         return billingEvent -> {
-            log.info("billingConsumer qwe = " + billingEvent.getPayload());
+            log.info("billingConsumer = " + billingEvent.getPayload());
             catalogService.saveResult(billingEvent.getPayload());
         };
     }

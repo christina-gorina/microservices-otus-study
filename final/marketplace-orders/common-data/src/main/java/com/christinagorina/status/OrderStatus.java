@@ -3,6 +3,7 @@ package com.christinagorina.status;
 public enum OrderStatus {
     NEW,
     RESERVED,
-    REJECTED,
+    RESERVE_REJECTED,
+    PAYMENT_REJECTED,
     COMPLETED
 }

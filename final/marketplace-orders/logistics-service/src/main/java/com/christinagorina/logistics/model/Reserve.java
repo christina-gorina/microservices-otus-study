@@ -23,5 +23,6 @@ public class Reserve {
     private UUID productItemUUID;
     private Integer count;
     private OrderStatus orderStatus;
+    private String warehouseName;
 
 }

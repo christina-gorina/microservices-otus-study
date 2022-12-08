@@ -43,12 +43,10 @@ public class OrderService {
                 .withPayload(orderEvent)
                 .setHeader(KafkaHeaders.MESSAGE_KEY, order.getId())
                 .build();
-        log.info("orderEventMsg qwe = " + orderEventMsg);
+        log.info("orderEventMsg = " + orderEventMsg);
 
-        //TODO идемпотентность входящих в BFF сообщений
-        //TODO возможно сделать еще выдачу ближайших трех пунктов досьавки
         orderSink.tryEmitNext(orderEventMsg);
-        return "New order from userId " + orderDto.getUserId() + " created";
+        return "New order with uuid " + orderDto.getOrderUuid() + " created";
 
     }
 
@@ -58,7 +56,7 @@ public class OrderService {
         order.setOrderStatus(billingEvent.getOrderStatus());
         order.setUserMessage(billingEvent.getUserMessage());
         order = orderRepository.save(order);
-        log.info("order result qwe = " + order);
+        log.info("order result = " + order);
     }
 
     public Order findByOrderUuid(UUID orderUuid) {

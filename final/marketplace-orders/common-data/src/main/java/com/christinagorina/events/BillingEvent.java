@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -14,6 +18,8 @@ public class BillingEvent {
 
     private Long orderId;
     private OrderStatus orderStatus;
-    private String userMessage; //TODO записать сообщение в случае нехватки товаров и денег
+    private String userMessage;
+    private List<ReserveOnWarehouse> reserveOnWarehouses;
+    private Map<UUID, Integer> productItemsUuidAndCount;
 
 }

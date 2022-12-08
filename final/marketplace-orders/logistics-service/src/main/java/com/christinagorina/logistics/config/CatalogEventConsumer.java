@@ -20,7 +20,7 @@ public class CatalogEventConsumer {
     @Bean
     public Consumer<Message<CatalogEvent>> catalogReservedConsumer() {
         return catalogEvent -> {
-            log.info("catalogEvent qwe = " + catalogEvent.getPayload());
+            log.info("catalogEvent = " + catalogEvent.getPayload());
             warehouseService.warehouseReserve(catalogEvent);
 
         };

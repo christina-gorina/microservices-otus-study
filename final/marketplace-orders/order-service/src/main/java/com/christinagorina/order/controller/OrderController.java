@@ -21,13 +21,13 @@ public class OrderController {
 
     @PostMapping("/api/order")
     public String create(@RequestBody OrderDto orderDto) {
-        log.info("order qwe = " + orderDto);
+        log.info("orderDto = " + orderDto);
         return orderService.createOrder(orderDto);
     }
 
     @GetMapping("/api/order/{orderUuid}")
     public Order getOrder(@PathVariable String orderUuid) {
-        log.info("order orderUuid qwe = " + orderUuid);
+        log.info("orderUuid  = " + orderUuid);
         return orderService.findByOrderUuid(UUID.fromString(orderUuid));
     }
 

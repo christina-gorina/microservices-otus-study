@@ -19,5 +19,4 @@ public class OrdersIdempotent {
     private String id;
     private Long orderId;
     private OrderStatus orderStatus;
-    //TODO возможно для откатывающей транзакции здесь статус и товары с количеством завести
 }

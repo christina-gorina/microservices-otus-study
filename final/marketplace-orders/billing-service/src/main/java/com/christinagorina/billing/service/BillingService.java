@@ -29,26 +29,41 @@ public class BillingService {
     private final OrdersIdempotentRepository ordersIdempotentRepository;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Exception.class)
-    public BillingEvent check(OrderEvent orderEvent, LogisticsEvent logisticsEvent) {
+    public void check(OrderEvent orderEvent, LogisticsEvent logisticsEvent) {
+        log.info("orderEvent check = " + orderEvent);
+        log.info("logisticsEvent check = " + logisticsEvent);
         Optional<OrdersIdempotent> ordersIdempotent = ordersIdempotentRepository.findByOrderId(logisticsEvent.getOrderId());
-        log.info("qwe ordersIdempotent = " + ordersIdempotent);
+        log.info("ordersIdempotent = " + ordersIdempotent);
         if (ordersIdempotent.isPresent()) {
-            log.info("qwe2");
-            return null;
+            //TODO если прогнать любой сценарий, отключить сервисы, а потом запустить этот сервис, то он все равно получит из кафки последнее сообщение,
+            // сделать отправку подтверждения хдесь, как в остальных сервисах
+
+            //TODO написать 3 сценария для тестов, набить тестовые данные
+
+            //TODO возможно подключить регистрацию
+            log.info("Already exist");
+            return;
         }
-        log.info("qwe3");
-        OrdersIdempotent ordersIdempotentNew = ordersIdempotentRepository.save(OrdersIdempotent.builder().orderId(logisticsEvent.getOrderId()).orderStatus(logisticsEvent.getOrderStatus()).build());
-        log.info("qwe4 ordersIdempotentNew = " + ordersIdempotentNew);
-
-
-        log.info("orderEvent checkOrder qwe {}", orderEvent);
-        log.info("logisticsEvent checkOrder qwe {}", logisticsEvent);
-        if(!(OrderStatus.NEW.equals(orderEvent.getOrderStatus()) || OrderStatus.RESERVED.equals(logisticsEvent.getOrderStatus()))){
+        ordersIdempotentRepository.save(OrdersIdempotent.builder().orderId(logisticsEvent.getOrderId()).orderStatus(logisticsEvent.getOrderStatus()).build());
+        log.info("orderEvent checkOrder {}", orderEvent);
+        log.info("logisticsEvent checkOrder {}", logisticsEvent);
+        Optional.ofNullable(orderEvent).filter(o -> OrderStatus.NEW.equals(orderEvent.getOrderStatus())).orElseThrow();
+        OrderStatus orderStatus;
+        if(!OrderStatus.RESERVED.equals(logisticsEvent.getOrderStatus())){
             log.info("billingEvent final REJECTED");
-            return BillingEvent.builder().orderId(orderEvent.getOrderId()).orderStatus(OrderStatus.REJECTED).build();
+            orderStatus = logisticsEvent.getOrderStatus();
+        } else {
+            orderStatus = paymentReservation(orderEvent);
         }
-        BillingEvent billingEvent = paymentReservation(orderEvent, logisticsEvent);
-        log.info("billingEvent final qwe {}", billingEvent);
+        String userMessage;
+        if(OrderStatus.COMPLETED.equals(orderStatus)){
+            userMessage = logisticsEvent.getUserMessage();
+        } else {
+            userMessage = "Order rejected";
+        }
+
+        BillingEvent billingEvent = createBillingEvent(orderEvent, logisticsEvent, orderStatus, userMessage);
+        log.info("billingEvent final {}", billingEvent);
 
         Message<BillingEvent> billingEventMsg = MessageBuilder
                 .withPayload(billingEvent)
@@ -58,30 +73,30 @@ public class BillingService {
         Sinks.EmitResult emitResult = resultSink.tryEmitNext(billingEventMsg);
 
         if (emitResult.isSuccess()) {
-            log.info("emitResult.isSuccess qwe");
+            log.info("emitResult.isSuccess");
         } else {
-            log.info("emitResult.error qwe ");
+            log.info("emitResult.error");
         }
-
-
-        return billingEvent;
     }
 
-    private BillingEvent paymentReservation(OrderEvent orderEvent, LogisticsEvent logisticsEvent) {
+    private OrderStatus paymentReservation(OrderEvent orderEvent) {
         return accountRepository.findById(orderEvent.getUserId())
                 .filter(account -> account.getBalance().compareTo(orderEvent.getPrice()) >= 0)
                 .map(account -> {
                     account.setBalance(account.getBalance().subtract(orderEvent.getPrice()));
-                    return BillingEvent.builder()
-                            .orderStatus(OrderStatus.COMPLETED)
-                            .orderId(orderEvent.getOrderId())
-                            .userMessage(logisticsEvent.getUserMessage())
-                            .build();
+                    return OrderStatus.COMPLETED;
                 })
-                .orElse(BillingEvent.builder()
-                        .orderStatus(OrderStatus.REJECTED)
-                        .orderId(orderEvent.getOrderId())
-                        .build());
+                .orElse(OrderStatus.PAYMENT_REJECTED);
+    }
+
+    private BillingEvent createBillingEvent(OrderEvent orderEvent, LogisticsEvent logisticsEvent, OrderStatus orderStatus, String userMessage) {
+        return BillingEvent.builder()
+                .orderStatus(orderStatus)
+                .orderId(orderEvent.getOrderId())
+                .userMessage(userMessage)
+                .reserveOnWarehouses(logisticsEvent.getReserveOnWarehouses())
+                .productItemsUuidAndCount(logisticsEvent.getProductItemsUuidAndCount())
+                .build();
     }
 
 }

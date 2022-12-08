@@ -28,7 +28,7 @@ public class DatabaseChangelog {
                 "{'uuid': '44c053f4-f408-4193-906a-4270e978c70c','warehouseCount':1, 'name': 'productItem4'}" +
                 "{'uuid': '5188d680-7dfc-4f5a-b6bb-04d7ca14486c','warehouseCount':25, 'name': 'productItem5'}" +
                 "]," +
-                "reserve:[]" +
+                "reserveList:[]" +
                 "}");
         var warehouse2 = Document.parse("{'name':'Pragskaya','location': {'coordinates':[55.614403, 37.606506],'type':'Point'}" +
                 ",'productItems': [" +
@@ -38,7 +38,7 @@ public class DatabaseChangelog {
                 "{'uuid': '44c053f4-f408-4193-906a-4270e978c70c','warehouseCount':8, 'name': 'productItem4'}" +
                 "{'uuid': '5188d680-7dfc-4f5a-b6bb-04d7ca14486c','warehouseCount':1, 'name': 'productItem5'}" +
                 "]" +
-                "reserve:[]" +
+                "reserveList:[]" +
                 "}");
         var warehouse3 = Document.parse("{'name':'Yugnaya','location': {'coordinates':[55.621719, 37.611742],'type':'Point'}" +
                 ",'productItems': [" +
@@ -47,7 +47,7 @@ public class DatabaseChangelog {
                 "{'uuid': '3a48c0ea-0a2c-4d17-97f2-7bc51e8b10f8','warehouseCount':10, 'name': 'productItem3'}" +
                 "{'uuid': '5188d680-7dfc-4f5a-b6bb-04d7ca14486c','warehouseCount':4, 'name': 'productItem5'}" +
                 "]" +
-                "reserve:[]" +
+                "reserveList:[]" +
                 "}");
         var warehouse4 = Document.parse("{'name':'Chertanovskaya','location': {'coordinates':[55.640432, 37.607936],'type':'Point'}" +
                 ",'productItems': [" +
@@ -56,7 +56,7 @@ public class DatabaseChangelog {
                 "{'uuid': '3a48c0ea-0a2c-4d17-97f2-7bc51e8b10f8','warehouseCount':1, 'name': 'productItem3'}" +
                 "{'uuid': '44c053f4-f408-4193-906a-4270e978c70c','warehouseCount':31, 'name': 'productItem4'}" +
                 "]" +
-                "reserve:[]" +
+                "reserveList:[]" +
                 "}");
         warehouseList.add(warehouse1);
         warehouseList.add(warehouse2);
