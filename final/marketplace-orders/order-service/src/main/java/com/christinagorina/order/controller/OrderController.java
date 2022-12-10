@@ -3,6 +3,7 @@ package com.christinagorina.order.controller;
 import com.christinagorina.dto.OrderDto;
 import com.christinagorina.order.dto.AnswerDto;
 import com.christinagorina.order.model.Order;
+import com.christinagorina.order.repository.OrderRepository;
 import com.christinagorina.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
     @PostMapping("/api/order")
     public String create(@RequestBody OrderDto orderDto, @RequestHeader("x-auth-user") String xAuthUser) throws IllegalAccessException {
@@ -44,6 +47,15 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new AnswerDto("OK"));
+    }
+
+    @DeleteMapping("/api/orderDbReInit")
+    public List<Order> orderDbReInit() {
+        log.info("orderDbReInit");
+        orderRepository.deleteAll();
+        List<Order> orderList = orderRepository.findAll();
+        log.info("orderList = " + orderList);
+        return orderList;
     }
 
 }
