@@ -23,7 +23,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private UUID orderUuid;
-    private Long  userId;
+    private String  userName;
     private OrderStatus orderStatus;
     private Double addressX;
     private Double addressY;

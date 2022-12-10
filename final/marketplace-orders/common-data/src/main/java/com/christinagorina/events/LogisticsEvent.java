@@ -16,7 +16,7 @@ public class LogisticsEvent {
     private Long orderId;
     @NonNull
     private OrderStatus orderStatus;
-    private Long userId;
+    private String userName;
     private String userMessage;
     private Map<UUID, Integer> productItemsUuidAndCount;
     private List<ReserveOnWarehouse> reserveOnWarehouses;

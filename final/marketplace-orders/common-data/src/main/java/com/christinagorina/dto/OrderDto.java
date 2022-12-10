@@ -10,7 +10,7 @@ import java.util.UUID;
 public class OrderDto {
 
     private UUID orderUuid;
-    private Long  userId;
+    private String  userName;
     private Map<UUID, Integer> productItemsUuidAndCount;
     private Boolean point;
     private Long  pointId;

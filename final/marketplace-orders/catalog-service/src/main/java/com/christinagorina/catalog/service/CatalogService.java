@@ -56,7 +56,7 @@ public class CatalogService {
                 .addressY(orderEvent.getAddressY())
                 .orderId(orderEvent.getOrderId())
                 .productItemsUuidAndCount(orderEvent.getProductItemsUuidAndCount())
-                .userId(orderEvent.getUserId())
+                .userName(orderEvent.getUserName())
                 .build();
 
         if (!checkCountCorrect) {

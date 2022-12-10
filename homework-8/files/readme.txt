@@ -2,7 +2,6 @@
 
 ВНЕСТИ ИЗМЕНЕНИЯ В jar И СБИЛДИТЬ
 
-
 kubectl create namespace homework-8
 
 cd "C:\Kris\CodeBase\Сourses\Otus\Microservices\homeworks\microservices-otus-study\homework-8\usersformetrics"
@@ -11,22 +10,17 @@ docker build -t  homework-8:1.0.0 .
 
 docker tag homework-8:1.0.0 christinagorina/homework-8:1.0.0
 
-
 docker push christinagorina/homework-8:1.0.0
 
-
 docker pull christinagorina/homework-8:1.0.0
-
 
 cd "C:\Kris\CodeBase\Сourses\Otus\Microservices\homeworks\microservices-otus-study\homework-8\files\appUsers"
 
 ПОПРАВИТЬ ВЕРСИЮ В DEPLOYMENT
 
-
 kubectl apply -f .
 
 kubectl -n homework-8 logs ИМЯ ПОДА
-
 
 http://arch.homework/api/v1/health
 

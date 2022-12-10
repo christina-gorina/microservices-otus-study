@@ -1,0 +1,6 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: finalwork-namespace
+  labels:
+    env: finalwork

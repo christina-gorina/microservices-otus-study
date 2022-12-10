@@ -1,0 +1,35 @@
+1. Скачиваем с dockerHub сервисы с помощью следующих команд
+docker pull christinagorina/order-final:1.0.0
+docker pull christinagorina/catalog-final:1.0.0
+docker pull christinagorina/logistics-final:1.0.0
+docker pull christinagorina/billing-final:1.0.0
+
+2. Переходим в папку files
+cd "адрес_до_папки_с_проектом\microservices-otus-study\final\marketplace-orders\files"
+
+3. Создаем namespace
+kubectl apply -f namespace.yml
+
+???4. В качестве api-gateway используется nginx-ingress, установленный следующей командой с файлом nginx-config.yaml
+helm install ingress-nginx --namespace finalwork-namespace --values nginx-config.yaml ingress-nginx/ingress-nginx
+
+5. Устанавливаем сервисы
+kubectl apply -f order-k8s.yaml
+kubectl apply -f catalog-k8s.yaml
+
+6. Проверяем что установилось
+kubectl get services -n finalwork-namespace
+или
+kubectl get po -n finalwork-namespace
+
+???? kubectl describe service kafka-service
+
+7. Пробрасываем порты
+kubectl -n finalwork-namespace port-forward service/order-service  80:80
+
+????8. Адрес тестов для postmen
+адрес_до_папки_с_проектом\microservices-otus-study\homework-12\tests\homework12tests.json
+
+?????8. Адрес схемы
+адрес_до_папки_с_проектом\microservices-otus-study\homework-12\shema.png
+

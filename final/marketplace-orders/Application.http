@@ -65,3 +65,92 @@ Content-Type: application/json
 GET http://localhost:8091/api/order/390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e
 Content-Type: application/json
 ###
+
+
+######################################################################################################
+### COMPLETED
+POST http://localhost/api/order
+Content-Type: application/json
+
+{
+  "orderUuid": "1616db4e-606a-4c45-925d-0fca6abd07a2",
+  "userId": "1",
+  "productItemsUuidAndCount": {
+    "16cb7a21-eb5e-4d41-a176-8f49ca425b0c":"5",
+    "261e9635-3ed0-485f-8f28-56aa156958ea":"30",
+    "3a48c0ea-0a2c-4d17-97f2-7bc51e8b10f8":"10"
+  },
+  "addressX": "55.583037",
+  "addressY": "37.595277",
+  "price": "160"
+
+}
+###
+GET http://localhost/api/order/1616db4e-606a-4c45-925d-0fca6abd07a2
+Content-Type: application/json
+###
+### PAYMENT_REJECTED
+POST http://localhost/api/order
+Content-Type: application/json
+
+{
+  "orderUuid": "248e5129-3d91-47bd-87a4-3cbc72081df2",
+  "userId": "2",
+  "productItemsUuidAndCount": {
+    "44c053f4-f408-4193-906a-4270e978c70c":"10",
+    "5188d680-7dfc-4f5a-b6bb-04d7ca14486c":"5",
+    "6c6f53c7-d100-4946-a161-012c49028905":"23"
+  },
+  "addressX": "55.583037",
+  "addressY": "37.595277",
+  "price": "266"
+
+}
+###
+GET http://localhost/api/order/248e5129-3d91-47bd-87a4-3cbc72081df2
+Content-Type: application/json
+###
+
+
+###RESERVE_REJECTED
+POST http://localhost/api/order
+Content-Type: application/json
+
+{
+  "orderUuid": "390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e",
+  "userId": "3",
+  "productItemsUuidAndCount": {
+    "793a5f4e-8179-44ca-a98b-e47fc8e1ae35":"30",
+    "8af6b13d-d72f-4612-89c0-2aa0a09524b0":"5",
+    "95e028b4-c360-4143-b299-ce9931c5adc0":"4"
+  },
+  "addressX": "55.583037",
+  "addressY": "37.595277",
+  "price": "153"
+
+}
+###
+GET http://localhost/api/order/390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e
+Content-Type: application/json
+###
+######################################################################################################
+
+POST http://localhost:8095/registration
+Content-Type: application/json
+
+{
+    "name": "user1",
+    "password": "password",
+    "email": "user1@gmail.com",
+    "firstName": "user1FirstName",
+    "lastName": "user1LastName",
+    "phone": "123345"
+}
+###
+
+POST http://localhost:8095/login?username=user1&password=password
+Content-Type: application/json
+
+###
+
+

@@ -154,7 +154,7 @@ public class WarehouseService {
                 .withPayload(LogisticsEvent.builder()
                         .orderId(catalogEvent.getOrderId())
                         .orderStatus(orderStatus)
-                        .userId(catalogEvent.getUserId())
+                        .userName(catalogEvent.getUserName())
                         .userMessage(userMessage)
                         .productItemsUuidAndCount(catalogEvent.getProductItemsUuidAndCount())
                         .reserveOnWarehouses(reserveOnWarehouses)

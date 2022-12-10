@@ -13,7 +13,7 @@ public class OrderMapper {
 
     public Order orderDtoToOrder(@NonNull OrderDto orderDto){
         return Order.builder()
-                .userId(orderDto.getUserId())
+                .userName(orderDto.getUserName())
                 .addressX(orderDto.getAddressX())
                 .addressY(orderDto.getAddressY())
                 .price(orderDto.getPrice())
@@ -28,7 +28,7 @@ public class OrderMapper {
                 .orderStatus(order.getOrderStatus())
                 .addressX(order.getAddressX())
                 .addressY(order.getAddressY())
-                .userId(order.getUserId())
+                .userName(order.getUserName())
                 .price(order.getPrice())
                 .build();
 

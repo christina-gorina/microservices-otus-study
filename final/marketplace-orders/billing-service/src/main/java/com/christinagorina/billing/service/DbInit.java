@@ -18,9 +18,9 @@ public class DbInit {
 
     @PostConstruct
     private void postConstruct() {
-        Account account1 = new Account(1L, 1L, new BigDecimal(200));
-        Account account2 = new Account(2L, 2L, new BigDecimal(250));
-        Account account3 = new Account(3L, 3L, new BigDecimal(200));
+        Account account1 = new Account(1L, "user1", new BigDecimal(200));
+        Account account2 = new Account(2L, "user2", new BigDecimal(250));
+        Account account3 = new Account(3L, "user3", new BigDecimal(200));
 
         List<Account> accountList = new ArrayList<>();
         accountList.add(account1);

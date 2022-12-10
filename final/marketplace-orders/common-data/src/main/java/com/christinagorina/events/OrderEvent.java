@@ -17,7 +17,7 @@ public class OrderEvent {
     private Map<UUID, Integer> productItemsUuidAndCount;
     @NonNull
     private OrderStatus orderStatus;
-    private Long userId;
+    private String userName;
     private BigDecimal price;
     private Double addressX;
     private Double addressY;

@@ -35,12 +35,6 @@ public class BillingService {
         Optional<OrdersIdempotent> ordersIdempotent = ordersIdempotentRepository.findByOrderId(logisticsEvent.getOrderId());
         log.info("ordersIdempotent = " + ordersIdempotent);
         if (ordersIdempotent.isPresent()) {
-            //TODO если прогнать любой сценарий, отключить сервисы, а потом запустить этот сервис, то он все равно получит из кафки последнее сообщение,
-            // сделать отправку подтверждения здесь, как в остальных сервисах
-
-            //TODO написать 3 сценария для тестов, набить тестовые данные
-
-            //TODO возможно подключить регистрацию
             log.info("Already exist");
             return;
         }
@@ -80,7 +74,7 @@ public class BillingService {
     }
 
     private OrderStatus paymentReservation(OrderEvent orderEvent) {
-        return accountRepository.findById(orderEvent.getUserId())
+        return accountRepository.findByUserName(orderEvent.getUserName())
                 .filter(account -> account.getBalance().compareTo(orderEvent.getPrice()) >= 0)
                 .map(account -> {
                     account.setBalance(account.getBalance().subtract(orderEvent.getPrice()));

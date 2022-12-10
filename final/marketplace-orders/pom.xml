@@ -9,6 +9,8 @@
 		<module>billing-service</module>
 		<module>order-service</module>
 		<module>logistics-service</module>
+		<module>auth-service</module>
+		<module>users-service</module>
 	</modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
@@ -18,7 +20,7 @@
 	</parent>
 	<groupId>com.christinagorina</groupId>
 	<artifactId>marketplace-orders</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>marketplace-orders</name>
 	<description>Final work for microservice otus training</description>
 
