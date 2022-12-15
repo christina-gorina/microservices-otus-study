@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: billing-service
-          image: billing-final:1.0.0
+          image: christinagorina/billing-final:1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

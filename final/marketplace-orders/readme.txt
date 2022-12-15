@@ -129,6 +129,83 @@ Kafka may be tricky to handle proficiently duplications/idempotency. In this pro
 
 
 ------------------------------------
+порты пробрасываем только для ингресса, а он уже маршрутизирует трафик
+------------------------------------
+{
+  "orderUuid": "1616db4e-606a-4c45-925d-0fca6abd07a2",
+  "userName": "user1",
+  "productItemsUuidAndCount": {
+    "16cb7a21-eb5e-4d41-a176-8f49ca425b0c":"5",
+    "261e9635-3ed0-485f-8f28-56aa156958ea":"30",
+    "3a48c0ea-0a2c-4d17-97f2-7bc51e8b10f8":"10"
+  },
+  "addressX": "55.728783", 
+  "addressY": "37.610988",
+  "price": "160"
+
+}
+
+{
+    "id": 1,
+    "orderUuid": "1616db4e-606a-4c45-925d-0fca6abd07a2",
+    "userName": "user1",
+    "orderStatus": "COMPLETED",
+    "addressX": 55.728783,
+    "addressY": 37.610988,
+    "dateTime": "2022-12-11T18:31:03.728989",
+    "price": 160.00,
+    "userMessage": "Товар productItem1 будет доставлен со склада Dubrovka в количестве 3;\nТовар productItem1 будет доставлен со склада Chertanovskaya в количестве 2;\nТовар productItem2 будет доставлен со склада Dubrovka в количестве 20;\nТовар productItem2 будет доставлен со склада Chertanovskaya в количестве 10;\nТовар productItem3 будет доставлен со склада Dubrovka в количестве 3;\nТовар productItem3 будет доставлен со склада Chertanovskaya в количестве 1;\nТовар productItem3 будет доставлен со склада Belyaevo в количестве 5;\nТовар productItem3 будет доставлен со склада Izmaylovo в количестве 1;\n"
+}
+------------------------------------
+{
+  "orderUuid": "248e5129-3d91-47bd-87a4-3cbc72081df2",
+  "userName": "user2",
+  "productItemsUuidAndCount": {
+    "44c053f4-f408-4193-906a-4270e978c70c":"10",
+    "5188d680-7dfc-4f5a-b6bb-04d7ca14486c":"5",
+    "6c6f53c7-d100-4946-a161-012c49028905":"23"
+  },
+  "addressX": "55.728783", 
+  "addressY": "37.610988",
+  "price": "266"
+
+}
+{
+    "id": 2,
+    "orderUuid": "248e5129-3d91-47bd-87a4-3cbc72081df2",
+    "userName": "user2",
+    "orderStatus": "PAYMENT_REJECTED",
+    "addressX": 55.728783,
+    "addressY": 37.610988,
+    "dateTime": "2022-12-11T18:31:37.420384",
+    "price": 266.00,
+    "userMessage": "Order rejected"
+}
+------------------------------------
+{
+  "orderUuid": "390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e",
+  "userName": "user3",
+  "productItemsUuidAndCount": {
+    "793a5f4e-8179-44ca-a98b-e47fc8e1ae35":"30",
+    "8af6b13d-d72f-4612-89c0-2aa0a09524b0":"5",
+    "95e028b4-c360-4143-b299-ce9931c5adc0":"4"
+  },
+  "addressX": "55.728783", 
+  "addressY": "37.610988",
+  "price": "153"
+
+}
+{
+    "id": 3,
+    "orderUuid": "390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e",
+    "userName": "user3",
+    "orderStatus": "RESERVE_REJECTED",
+    "addressX": 55.728783,
+    "addressY": 37.610988,
+    "dateTime": "2022-12-11T18:32:09.636204",
+    "price": 153.00,
+    "userMessage": "Order rejected"
+}
 
 
 

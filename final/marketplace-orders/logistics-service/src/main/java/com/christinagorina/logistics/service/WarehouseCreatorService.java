@@ -20,8 +20,8 @@ public class WarehouseCreatorService {
     public List<Warehouse> createWarehouse() {
         Warehouse warehouse1 = new Warehouse();
         List<Float> coordinates1 = new ArrayList<>();
-        coordinates1.add(55.594575f);
-        coordinates1.add(37.599154f);
+        coordinates1.add(55.641920f);
+        coordinates1.add(37.523465f);
         Location location1 = new Location();
         location1.setCoordinates(coordinates1);
         location1.setType("Point");
@@ -39,15 +39,15 @@ public class WarehouseCreatorService {
         productItemList1.add(productItem1_5);
         productItemList1.add(productItem1_6);
         productItemList1.add(productItem1_7);
-        warehouse1.setName("Yangelya");
+        warehouse1.setName("Belyaevo");
         warehouse1.setLocation(location1);
         warehouse1.setProductItems(productItemList1);
         warehouse1.setReserveList(reserveList1);
 
         Warehouse warehouse2 = new Warehouse();
         List<Float> coordinates2 = new ArrayList<>();
-        coordinates2.add(55.614403f);
-        coordinates2.add(37.606506f);
+        coordinates2.add(55.710974f);
+        coordinates2.add(37.677204f);
         Location location2 = new Location();
         location2.setCoordinates(coordinates2);
         location2.setType("Point");
@@ -69,15 +69,15 @@ public class WarehouseCreatorService {
         productItemList2.add(productItem2_6);
         productItemList2.add(productItem2_7);
         productItemList2.add(productItem2_8);
-        warehouse2.setName("Pragskaya");
+        warehouse2.setName("Dubrovka");
         warehouse2.setLocation(location2);
         warehouse2.setProductItems(productItemList2);
         warehouse2.setReserveList(reserveList2);
 
         Warehouse warehouse3 = new Warehouse();
         List<Float> coordinates3 = new ArrayList<>();
-        coordinates3.add(55.621719f);
-        coordinates3.add(37.611742f);
+        coordinates3.add(55.788717f);
+        coordinates3.add(37.741908f);
         Location location3 = new Location();
         location3.setCoordinates(coordinates3);
         location3.setType("Point");
@@ -95,7 +95,7 @@ public class WarehouseCreatorService {
         productItemList3.add(productItem3_5);
         productItemList3.add(productItem3_6);
         productItemList3.add(productItem3_9);
-        warehouse3.setName("Yugnaya");
+        warehouse3.setName("Izmaylovo");
         warehouse3.setLocation(location3);
         warehouse3.setProductItems(productItemList3);
         warehouse3.setReserveList(reserveList3);

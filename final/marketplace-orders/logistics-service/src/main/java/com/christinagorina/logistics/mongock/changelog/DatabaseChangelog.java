@@ -21,7 +21,7 @@ public class DatabaseChangelog {
     public void insertWarehouse(MongoDatabase db) {
         MongoCollection<Document> warehouseCollection = db.getCollection("warehouses");
         List<Document> warehouseList = new ArrayList<>();
-        var warehouse1 = Document.parse("{'name':'Yangelya','location': {'coordinates':[55.594575, 37.599154],'type':'Point'}" +
+        var warehouse1 = Document.parse("{'name':'Belyaevo','location': {'coordinates':[55.641920, 37.523465],'type':'Point'}" +
                 ",'productItems': [" +
                 "{'uuid': '16cb7a21-eb5e-4d41-a176-8f49ca425b0c','warehouseCount':10, 'name': 'productItem1'}, " +
                 "{'uuid': '3a48c0ea-0a2c-4d17-97f2-7bc51e8b10f8','warehouseCount':5, 'name': 'productItem3'}" +
@@ -32,7 +32,7 @@ public class DatabaseChangelog {
                 "]," +
                 "reserveList:[]" +
                 "}");
-        var warehouse2 = Document.parse("{'name':'Pragskaya','location': {'coordinates':[55.614403, 37.606506],'type':'Point'}" +
+        var warehouse2 = Document.parse("{'name':'Dubrovka','location': {'coordinates':[55.710974, 37.677204],'type':'Point'}" +
                 ",'productItems': [" +
                 "{'uuid': '16cb7a21-eb5e-4d41-a176-8f49ca425b0c','warehouseCount':3, 'name': 'productItem1'}, " +
                 "{'uuid': '261e9635-3ed0-485f-8f28-56aa156958ea','warehouseCount':20, 'name': 'productItem2'}" +
@@ -45,7 +45,7 @@ public class DatabaseChangelog {
                 "]" +
                 "reserveList:[]" +
                 "}");
-        var warehouse3 = Document.parse("{'name':'Yugnaya','location': {'coordinates':[55.621719, 37.611742],'type':'Point'}" +
+        var warehouse3 = Document.parse("{'name':'Izmaylovo','location': {'coordinates':[55.788717, 37.741908],'type':'Point'}" +
                 ",'productItems': [" +
                 "{'uuid': '16cb7a21-eb5e-4d41-a176-8f49ca425b0c','warehouseCount':5, 'name': 'productItem1'}, " +
                 "{'uuid': '261e9635-3ed0-485f-8f28-56aa156958ea','warehouseCount':12, 'name': 'productItem2'}" +

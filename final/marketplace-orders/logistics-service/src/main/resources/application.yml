@@ -1,5 +1,5 @@
-#spring.kafka:
-  #bootstrap-servers: kafka-0.kafka-service.finalwork-namespace.svc.cluster.local:9092
+spring.kafka:
+  bootstrap-servers: kafka-0.kafka-service.finalwork-namespace.svc.cluster.local:9092
 spring:
   data:
     mongodb:

@@ -1,0 +1,103 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: order-service 
+  namespace: finalwork-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/auth-url: http://auth-service.finalwork-namespace.svc.cluster.local/insystem 
+    nginx.ingress.kubernetes.io/auth-response-headers: x-auth-user 
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: order-service 
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth-service
+  namespace: finalwork-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /auth(/|$)(.*) 
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 80             
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: billing-service
+  namespace: finalwork-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /billing(/|$)(.*) 
+            pathType: Prefix
+            backend:
+              service:
+                name: billing-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: catalog-service
+  namespace: finalwork-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /catalog(/|$)(.*) 
+            pathType: Prefix
+            backend:
+              service:
+                name: catalog-service
+                port:
+                  number: 80    
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: logistics-service
+  namespace: finalwork-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /logistics(/|$)(.*) 
+            pathType: Prefix
+            backend:
+              service:
+                name: logistics-service
+                port:
+                  number: 80  
+---         
+               

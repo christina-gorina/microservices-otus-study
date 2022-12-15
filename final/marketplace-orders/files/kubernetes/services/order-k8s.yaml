@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: order-service
-          image: order-final:1.0.0
+          image: christinagorina/order-final:1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

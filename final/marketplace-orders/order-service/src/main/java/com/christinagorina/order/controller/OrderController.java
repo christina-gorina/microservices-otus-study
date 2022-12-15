@@ -25,6 +25,12 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderRepository orderRepository;
 
+    @GetMapping("/")
+    public ResponseEntity<String> indexPage() {
+        System.out.println("order / ");
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
     @PostMapping("/api/order")
     public String create(@RequestBody OrderDto orderDto, @RequestHeader("x-auth-user") String xAuthUser) throws IllegalAccessException {
         log.info("orderDto = " + orderDto);
@@ -38,8 +44,7 @@ public class OrderController {
         log.info("orderUuid  = " + orderUuid);
         log.info("userName = " + userName);
         Optional.ofNullable(xAuthUser).filter(n -> n.equals(userName)).orElseThrow(IllegalAccessException::new);
-        return orderService.findByOrderUuid(UUID.fromString(orderUuid));
-    }
+        return orderService.findByOrderUuid(UUID.fromString(orderUuid)); }
 
     @GetMapping("/api/order/delay")
     public ResponseEntity<AnswerDto> delay() throws InterruptedException {

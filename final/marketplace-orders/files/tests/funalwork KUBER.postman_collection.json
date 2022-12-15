@@ -1,0 +1,1162 @@
+{
+	"info": {
+		"_postman_id": "beab1675-f253-4209-9b13-dd9e2adaa15c",
+		"name": "funalwork KUBER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Order COMPLETED scenario",
+			"item": [
+				{
+					"name": "Login user1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get user1\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"user1@gmail.com\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user1",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/auth/login?username=user1&password=password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user1"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check auth user1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User1 authenticated\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User authenticated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/insystem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"insystem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order COMPLETED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create order COMPLETED\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"created\" );\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user1",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"orderUuid\": \"1616db4e-606a-4c45-925d-0fca6abd07a2\",\r\n  \"userName\": \"user1\",\r\n  \"productItemsUuidAndCount\": {\r\n    \"16cb7a21-eb5e-4d41-a176-8f49ca425b0c\":\"5\",\r\n    \"261e9635-3ed0-485f-8f28-56aa156958ea\":\"30\",\r\n    \"3a48c0ea-0a2c-4d17-97f2-7bc51e8b10f8\":\"10\"\r\n  },\r\n  \"addressX\": \"55.728783\", \r\n  \"addressY\": \"37.610988\",\r\n  \"price\": \"160\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delay 10 sec",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delay 10 sec.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/order/delay",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order",
+								"delay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order COMPLETED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get order COMPLETED\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"COMPLETED\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user1",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/order/1616db4e-606a-4c45-925d-0fca6abd07a2/userName/user1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order",
+								"1616db4e-606a-4c45-925d-0fca6abd07a2",
+								"userName",
+								"user1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Logout user1\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check logout user1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check logout user1\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/insystem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"insystem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order PAYMENT_REJECTED scenario",
+			"item": [
+				{
+					"name": "Login user2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login user2 success\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/login?username=user2&password=password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user2"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check auth user2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User2 authenticated\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User authenticated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/insystem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"insystem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order PAYMENT_REJECTED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create order PAYMENT_REJECTED\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"created\" );\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user2",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"orderUuid\": \"248e5129-3d91-47bd-87a4-3cbc72081df2\",\r\n  \"userName\": \"user2\",\r\n  \"productItemsUuidAndCount\": {\r\n    \"44c053f4-f408-4193-906a-4270e978c70c\":\"10\",\r\n    \"5188d680-7dfc-4f5a-b6bb-04d7ca14486c\":\"5\",\r\n    \"6c6f53c7-d100-4946-a161-012c49028905\":\"23\"\r\n  },\r\n  \"addressX\": \"55.728783\", \r\n  \"addressY\": \"37.610988\",\r\n  \"price\": \"266\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delay 10 sec",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delay 10 sec.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/order/delay",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order",
+								"delay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order PAYMENT_REJECTED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get order PAYMENT_REJECTED\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"PAYMENT_REJECTED\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user2",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/order/248e5129-3d91-47bd-87a4-3cbc72081df2/userName/user2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order",
+								"248e5129-3d91-47bd-87a4-3cbc72081df2",
+								"userName",
+								"user2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Logout user2\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check logout user2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check logout user2\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/insystem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"insystem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order RESERVE_REJECTED scenario",
+			"item": [
+				{
+					"name": "Login user3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login user3 success\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/login?username=user3&password=password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user3"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check auth user3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"User3 authenticated\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User authenticated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/insystem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"insystem"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order RESERVE_REJECTED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Create order RESERVE_REJECTED\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"created\" );\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user3",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"orderUuid\": \"390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e\",\r\n  \"userName\": \"user3\",\r\n  \"productItemsUuidAndCount\": {\r\n    \"793a5f4e-8179-44ca-a98b-e47fc8e1ae35\":\"30\",\r\n    \"8af6b13d-d72f-4612-89c0-2aa0a09524b0\":\"5\",\r\n    \"95e028b4-c360-4143-b299-ce9931c5adc0\":\"4\"\r\n  },\r\n  \"addressX\": \"55.728783\", \r\n  \"addressY\": \"37.610988\",\r\n  \"price\": \"153\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delay 10 sec",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Delay 10 sec.\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/order/delay",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order",
+								"delay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order RESERVE_REJECTED",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get order RESERVE_REJECTED\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"RESERVE_REJECTED\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user3",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/api/order/390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e/userName/user3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"order",
+								"390de2a5-1b1d-4ee9-8e40-9705d3fd6a8e",
+								"userName",
+								"user3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Logout user3\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check logout user3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check logout user3\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/insystem",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"insystem"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clean",
+			"item": [
+				{
+					"name": "Login user1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Get user1\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"user1@gmail.com\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-user",
+								"value": "user1",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost/auth/login?username=user1&password=password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "user1"
+								},
+								{
+									"key": "password",
+									"value": "password"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OrderDbReInit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"OrderDbReInit\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/api/orderDbReInit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"orderDbReInit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CatalogDbReInit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"CatalogDbReInit\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/catalog/api/catalogDbReInit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"catalog",
+								"api",
+								"catalogDbReInit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogisticsDbReInit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"LogisticsDbReInit\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/logistics/api/logisticsDbReInit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"logistics",
+								"api",
+								"logisticsDbReInit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BillingDbReInit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"BillingDbReInit\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/billing/api/billingDbReInit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"billing",
+								"api",
+								"billingDbReInit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Logout user1\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Logout user2\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout user3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Logout user3\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"    pm.expect(pm.response.text()).to.include(\"User not authenticated\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

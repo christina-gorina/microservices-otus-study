@@ -35,8 +35,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .and()
                 .logout()
-                //.logoutSuccessUrl("/auth/insystem");
-                .logoutSuccessUrl("/insystem");
+                .logoutSuccessUrl("/auth/insystem");
+                //.logoutSuccessUrl("/insystem");
     }
 
     @SuppressWarnings("deprecation")

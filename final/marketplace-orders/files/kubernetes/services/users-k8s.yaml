@@ -2,41 +2,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: logistics-service
+  name: users-service
   namespace: finalwork-namespace
   labels:
-    app: logistics-service
+    app: users-service
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: logistics-service
+      app: users-service
   template:
     metadata:
       labels:
-        app: logistics-service
+        app: users-service
     spec:
       containers:
-        - name: logistics-service
-          image: christinagorina/logistics-final:1.0.0
+        - name: users-service
+          image: christinagorina/users-final:1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 8093
+              containerPort: 8096
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: logistics-service
+  name: users-service
   namespace: finalwork-namespace
 spec:
   type: ClusterIP
   selector:
-    app: logistics-service
+    app: users-service
   ports:
     - port: 80
       name: http
-      targetPort: 8093
+      targetPort: 8096

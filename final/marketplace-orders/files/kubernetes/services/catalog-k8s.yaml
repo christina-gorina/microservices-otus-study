@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: catalog-service
-          image: catalog-final:1.0.0
+          image: christinagorina/catalog-final:1.0.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

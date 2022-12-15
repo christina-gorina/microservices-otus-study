@@ -49,8 +49,8 @@ public class AuthController {
         System.out.println("authorisation headers = " + headers);
         HttpEntity<User> request = new HttpEntity<>(user, headers);
         System.out.println(" authorisation request = " + request);
-        //User registeredUser = restTemplate.postForObject("http://usersserver.finalwork-namespace.svc.cluster.local/api/v1/user", request, User.class);
-        User registeredUser = restTemplate.postForObject("http://localhost:8096/api/v1/user", request, User.class); // обращение к userservice запущенному через идею
+        User registeredUser = restTemplate.postForObject("http://users-service.finalwork-namespace.svc.cluster.local/api/v1/user", request, User.class);
+        //User registeredUser = restTemplate.postForObject("http://localhost:8096/api/v1/user", request, User.class); // обращение к userservice запущенному через идею
         System.out.println("authorisation registeredUser = " + registeredUser);
         if (registeredUser == null) {
             System.out.println("authorisation registeredUser is null");
