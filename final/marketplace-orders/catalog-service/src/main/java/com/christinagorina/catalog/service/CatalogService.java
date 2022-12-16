@@ -33,7 +33,7 @@ public class CatalogService {
     private final OrdersIdempotentRepository ordersIdempotentRepository;
     private final Sinks.Many<Message<CatalogEvent>> catalogSink;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class) //SERIALIZABLE т.к. товары могут добавляться и возможно фантомное чтение
     public void productItemReservation(Message<OrderEvent> orderEventMsg) {
         OrderEvent orderEvent = orderEventMsg.getPayload();
         log.info("orderEvent.getOrderId() = " + orderEvent.getOrderId());
@@ -132,3 +132,7 @@ public class CatalogService {
     }
 
 }
+
+
+
+

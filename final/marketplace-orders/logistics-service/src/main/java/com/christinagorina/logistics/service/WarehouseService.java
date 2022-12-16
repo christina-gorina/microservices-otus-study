@@ -45,7 +45,7 @@ public class WarehouseService {
     private final OrdersoIdempotentRepository ordersoIdempotentRepository;
     private final Sinks.Many<Message<LogisticsEvent>> logisticsSink;
 
-    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class)
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = Exception.class) //SERIALIZABLE т.к. товары могут добавляться и возможно фантомное чтение
     public void warehouseReserve(Message<CatalogEvent> catalogEventMsg) {
         CatalogEvent catalogEvent = catalogEventMsg.getPayload();
         Optional<OrdersIdempotent> ordersIdempotent = ordersoIdempotentRepository.findByOrderId(catalogEvent.getOrderId());
@@ -75,6 +75,9 @@ public class WarehouseService {
             GeoResults<Warehouse> gr = warehouseRepository.findByLocationNear(currentLocAnino, distance);
             List<Warehouse> warehouses = new ArrayList<>();
             gr.forEach(r -> warehouses.add(r.getContent()));
+
+
+
             catalogEvent.getProductItemsUuidAndCount().forEach((itemUuid, count) -> {
                 AtomicReference<Integer> reservedSave = new AtomicReference<>(0);
                 IntStream.range(0, warehouses.size()).forEach(i -> {
