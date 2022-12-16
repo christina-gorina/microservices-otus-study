@@ -1,0 +1,19 @@
+logging:
+  level:
+    root: error
+    org.springframework: debug
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    initialization-mode: always
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+    show-sql: true
+
+server:
+  port: 8096

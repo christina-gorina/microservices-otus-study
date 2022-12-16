@@ -1,0 +1,38 @@
+spring.kafka:
+  bootstrap-servers: kafka-0.kafka-service.finalwork-namespace.svc.cluster.local:9092
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:orderdb
+
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2.console.enabled: true
+
+spring.cloud.stream:
+  function:
+    definition: orderSupplier;orderCheckResultConsumer;
+  bindings:
+    orderCheckResultConsumer-in-0:
+      destination: billing-event
+    orderSupplier-out-0:
+      destination: order-event
+  kafka:
+    bindings:
+      orderSupplier-out-0:
+        producer:
+          configuration:
+            key:
+              serializer: org.apache.kafka.common.serialization.LongSerializer
+
+server:
+  port: 8091
+
+
+

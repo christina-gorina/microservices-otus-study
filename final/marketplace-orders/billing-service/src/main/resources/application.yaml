@@ -1,0 +1,40 @@
+spring.kafka:
+  bootstrap-servers: kafka-0.kafka-service.finalwork-namespace.svc.cluster.local:9092
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:catalogdb
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2.console.enabled: true
+  sql:
+    init:
+      mode: always
+
+spring.cloud.stream:
+  function:
+    definition: billingConsumer;resultSupplier;
+  bindings:
+    billingConsumer-in-0:
+      destination: order-event
+    billingConsumer-in-1:
+      destination: logistics-reserved
+    resultSupplier-out-0:
+      destination: billing-event
+  kafka:
+    bindings:
+      resultSupplier-out-0:
+        producer:
+          configuration:
+            key:
+              serializer: org.apache.kafka.common.serialization.LongSerializer
+
+server:
+  port: 8094
+

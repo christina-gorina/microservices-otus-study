@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: finalwork-namespace
+  labels:
+    app: order-service
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      containers:
+        - name: order-service
+          image: christinagorina/order-final:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8091
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: finalwork-namespace
+spec:
+  type: ClusterIP
+  selector:
+    app: order-service
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8091

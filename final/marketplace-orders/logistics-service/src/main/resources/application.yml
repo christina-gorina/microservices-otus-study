@@ -1,0 +1,41 @@
+spring.kafka:
+  bootstrap-servers: kafka-0.kafka-service.finalwork-namespace.svc.cluster.local:9092
+spring:
+  data:
+    mongodb:
+      port: 27017
+      database: logistics
+
+mongock:
+  runner-type: "ApplicationRunner"
+  change-logs-scan-package:
+    - com.christinagorina.logistics.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+spring.cloud.stream:
+  function:
+    definition: catalogReservedConsumer;logisticsSupplier;orderCheckResultConsumer;
+  bindings:
+    catalogReservedConsumer-in-0:
+      destination: catalog-reserved
+    orderCheckResultConsumer-in-0:
+      destination: billing-event
+    logisticsSupplier-out-0:
+      destination: logistics-reserved
+  kafka:
+    bindings:
+      catalogReservedConsumer-in-0:
+        consumer:
+          ack-mode: manual-immediate
+      logisticsSupplier-out-0:
+        producer:
+          configuration:
+            key:
+              serializer: org.apache.kafka.common.serialization.LongSerializer
+
+
+server:
+  port: 8093

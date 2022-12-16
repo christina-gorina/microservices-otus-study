@@ -1,0 +1,49 @@
+1. Скачиваем с dockerHub сервисы с помощью следующих команд
+docker pull christinagorina/order-final:1.0.0
+docker pull christinagorina/catalog-final:1.0.0
+docker pull christinagorina/logistics-final:1.0.0
+docker pull christinagorina/billing-final:1.0.0
+docker pull christinagorina/auth-final:1.0.0
+docker pull christinagorina/users-final:1.0.0
+
+2. Создаем namespace
+kubectl create namespace finalwork-namespace
+
+2. Переходим в папку nginx
+cd "адрес_до_папки_с_проектом\microservices-otus-study\final\marketplace-orders\files\kubernetes\nginx"
+
+В качестве api-gateway используется nginx-ingress, установленный следующей командой с файлом nginx-config.yaml
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install ingress-nginx --namespace finalwork-namespace --values nginx-config.yaml ingress-nginx/ingress-nginx
+
+3. Переходим в папку kafka
+cd "адрес_до_папки_с_проектом\microservices-otus-study\final\marketplace-orders\files\kubernetes\kafka"
+устанавливаем
+kubectl apply -f .
+
+4. Переходим в папку services
+cd "адрес_до_папки_с_проектом\microservices-otus-study\final\marketplace-orders\files\kubernetes\services"
+устанавливаем
+kubectl apply -f .
+
+4. Переходим в папку ingress
+cd "адрес_до_папки_с_проектом\microservices-otus-study\final\marketplace-orders\files\kubernetes\ingress"
+kubectl apply -f .
+
+
+6. Проверяем что установилось
+kubectl get services -n finalwork-namespace
+или
+kubectl get po -n finalwork-namespace
+Посмотреть логи
+kubectl -n finalwork-namespace logs ПОД
+Панель
+kubectl -n kubernetes-dashboard create token admin-user
+kubectl proxy
+
+7. Пробрасываем порты
+kubectl -n finalwork-namespace port-forward service/ingress-nginx-controller  80:80
+
+8. Адрес тестов для postmen
+адрес_до_папки_с_проектом\microservices-otus-study\final\marketplace-orders\files\tests\funalwork KUBER.postman_collection.json

@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: billing-service
+  namespace: finalwork-namespace
+  labels:
+    app: billing-service
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: billing-service
+  template:
+    metadata:
+      labels:
+        app: billing-service
+    spec:
+      containers:
+        - name: billing-service
+          image: christinagorina/billing-final:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8094
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: billing-service
+  namespace: finalwork-namespace
+spec:
+  type: ClusterIP
+  selector:
+    app: billing-service
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8094
